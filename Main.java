@@ -1,14 +1,14 @@
 import java.util.Arrays;
 
 public class Main {
-   static Medicine m;
+    static Medicine m;
+
     public static void main(String agrs[]) {
         // Medicine med = new Medicine(
         // new String[]{"Paracetamol","Ibuprofen","Amoxicillin","Aspirin","Cetirizine"},
         // new double[]{2.50,3.00,8.75,2.00,1.80},
         // new int[]{50,40,30,60,45}
         // );
-        Patient patient = new Patient("John", "M", "368278", "john123@gmail.com", "21-33--32-32", "Insulin", 8);
         // "123-543", med);
         // System.out.println("Pateint name: " patient.name);
         // String name;
@@ -71,25 +71,30 @@ public class Main {
         // }
 
         System.out.println("F3 Array stores references proof");
-     //   String Paracetamol = mName.medName[0];
-         mName = mName.findMedicine("Paracetamol");
-         if(mName.medName[0] != null){
+        // String Paracetamol = mName.medName[0];
+        mName = mName.findMedicine("Paracetamol");
+        if (mName.medName[0] != null) {
             System.out.println("Before change: Paracetamol: " + mName.medPrice[0]);
             mName.medPrice[0] = 3.50;
             System.out.println("After mName.medPrice[0] = 3.5: Paracetamol = " + mName.medPrice[0]);
             System.out.println("Menu printed again (array shows updated objext): ");
             System.out.println(Arrays.toString(mName.medPrice));
-         }
-         System.out.println("F4) Shared vs Snapshot proof (OPTION B: Snapshot");
-
+        }
+        System.out.println("F4) Shared vs Snapshot proof (OPTION B: Snapshot");
 
         // Medicine medicinePateintWant = new Medicine();
         // Medicine medicine = new Medicine( , null)
-         Service service = new Service(m);
-         Receiptionist receiptionist = new Receiptionist("Mey", 10, true);
-         receiptionist.addServed(m, service, patient);
-        //  Service service = new Service(m.medName, m.medPrice, m.instockQty, m.findMedicine("Paracetamol"));  
+        Patient patient = new Patient("John", "M", "368278", "john123@gmail.com", "21-33--32-32", "Insulin", 8);
+
+        Service service = new Service(m);
+
+        Receiptionist receiptionist = new Receiptionist("Mey", 10, true);
+
+        receiptionist.addServed(m, service, patient);
         
+
+        // Service service = new Service(m.medName, m.medPrice, m.instockQty,
+        // m.findMedicine("Paracetamol"));
 
     }
 }
