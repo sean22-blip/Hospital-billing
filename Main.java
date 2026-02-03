@@ -86,7 +86,7 @@ public class Main {
         // Medicine medicinePateintWant = new Medicine();
         // Medicine medicine = new Medicine( , null)
          Service service = new Service(m);
-         Receiptionist receiptionist = new Receiptionist("Mey", copiedPrice, 0, true);
+         Receiptionist receiptionist = new Receiptionist("Mey", 10, true);
          receiptionist.addServed(m, service, patient);
         //  Service service = new Service(m.medName, m.medPrice, m.instockQty, m.findMedicine("Paracetamol"));  
         
