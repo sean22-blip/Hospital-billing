@@ -41,5 +41,12 @@ public class Medicine{
         this.medPrice = medPrice;
         this.instockQty = instockQty;
     }
-    
+    public Medicine findMedicine(String name){
+        for(int i = 0;i < medName.length; i++){
+            if(name.equals(medName[i])){
+                return this;
+            }
+        }
+        return null;
+    }
 }

@@ -9,7 +9,8 @@ public class Receiptionist {
         this.salary = salary;
         this.servedCount = servedCount;
         this.onDuty = onDuty;
+        
     }
 
-    public void addServed
+    public void addServed(){};
 }
