@@ -1,0 +1,27 @@
+public class Patient {
+    String name;
+    String gender;
+    String pID;
+    String email;
+    String phNumber;
+    Medicine medName;
+
+
+    public Patient( String name, String gender, String pID, String email, String phNumber, Medicine medName){
+        this.name = name;
+        this.gender = gender;
+        this.pID = pID;
+        this.email = email;
+        this.phNumber = phNumber;
+        this.medName.medName = medName.medName;
+    }
+
+    // public boolean equal(Object obj){
+    // Patient other = (Patient)obj;
+    // if(!name.equals(other.name)){
+    //     return false;
+        
+    // }
+}
+
+
