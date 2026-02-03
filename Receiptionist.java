@@ -1,8 +1,11 @@
 public class Receiptionist {
     String name;
     double salary;
-    int servedCount;
+    int servedCount = 0;
     boolean onDuty;
+    Patient patient;
+
+
 
     public Receiptionist ( String name,  double salary, int servedCount, boolean onDuty) {
         this.name = name;
@@ -12,5 +15,7 @@ public class Receiptionist {
         
     }
 
-    public void addServed(){};
+    public void addServed(Medicine medicine, Service service, Patient patient){
+        servedCount++;
+    };
 }

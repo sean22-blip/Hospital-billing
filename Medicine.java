@@ -35,10 +35,9 @@ public class Medicine{
     25,
     70
     };
-
-    public Medicine(String[] medName, double[] medPrice, int[] instockQty) {
+    public  Medicine(String[] medName, int[] instockQty) {
         this.medName = medName;
-        this.medPrice = medPrice;
+      //  this.medPrice = medPrice;
         this.instockQty = instockQty;
     }
     public Medicine findMedicine(String name){
