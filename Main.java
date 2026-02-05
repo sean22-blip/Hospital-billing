@@ -1,10 +1,11 @@
 import java.util.Arrays;
 
 public class Main {
-    static Medicine m;
-
+    
+    
     public static void main(String agrs[]) {
-        // Medicine med = new Medicine(
+         Medicine medicine = new Medicine();
+        // Medicine med = new Medicine(ca
         // new String[]{"Paracetamol","Ibuprofen","Amoxicillin","Aspirin","Cetirizine"},
         // new double[]{2.50,3.00,8.75,2.00,1.80},
         // new int[]{50,40,30,60,45}
@@ -13,13 +14,13 @@ public class Main {
         // System.out.println("Pateint name: " patient.name);
         // String name;
         // double price;
-        // char size;
+        // char size;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              
         // boolean isAvailable;
         // Medicine med = new Medicine(agrs, null, null);
         // System.out.println("Primitive copy proof");
 
         System.out.println("F1 Primitive copy proof: ");
-        double originalPrice = m.medPrice[0];
+        double originalPrice = medicine.medPrice[0];
         double copiedPrice = originalPrice;
         copiedPrice = 4.22;
         System.out.println("Original Price: " + originalPrice);
@@ -33,7 +34,7 @@ public class Main {
 
         System.out.println("F2 Reference copy proof (same object)");
 
-        Medicine mName = m.findMedicine("Paracetamol");
+        Medicine mName = medicine.findMedicine("Paracetamol");
         if (mName != null) {
             Medicine mName1 = mName;
             System.out.println("Before change: mName.price: " + mName.medPrice[1]);
@@ -84,15 +85,33 @@ public class Main {
 
         // Medicine medicinePateintWant = new Medicine();
         // Medicine medicine = new Medicine( , null)
-        Patient patient = new Patient("John", "M", "368278", "john123@gmail.com", "21-33--32-32", "Insulin", 8);
-
-        Service service = new Service(m);
-
-        Receiptionist receiptionist = new Receiptionist("Mey", 10, true);
-
-        receiptionist.addServed(m, service, patient);
         
+        // Service service = new Service(m);
+    //     Patient patient1 = new Patient("John", "M", "368278", "john123@gmail.com", "21-33-32-32", "Insulin", 8);
 
+    //     Receiptionist receiptionist = new Receiptionist("Mey", true);
+
+    //    receiptionist.addServed(patient1.medicine, patient1.medQty, patient1.pID);
+
+
+
+
+Receipt receipt = new Receipt(medicine);
+
+
+ Receiptionist receiptionist = new Receiptionist("Mey", true);
+
+
+Patient patient = new Patient("John", "M", "368278", "john123@gmail.com", "21-33--32-32", "Insulin", 8);
+
+
+
+// receiptionist.addServed("Insulin", 2, "368278", patient);
+receiptionist.addServed("Insulin", 8, "368278");
+
+
+        
+        
         // Service service = new Service(m.medName, m.medPrice, m.instockQty,
         // m.findMedicine("Paracetamol"));
 

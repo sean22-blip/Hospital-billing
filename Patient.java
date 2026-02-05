@@ -4,10 +4,9 @@ public class Patient {
     String pID;
     String email;
     String phNumber;
-    String medicine;
-    int medQty;
-    // Medicine medName;
-    Service service;
+    // String medicine;
+    // int medQty;
+    // Receipt service;
     int count = 0;
 
 
@@ -21,10 +20,11 @@ public class Patient {
         this.medQty = medQty;
         // this.medName.medName = medName.medName;
         //track how many patients
-
-        
-
     }
+    public String getpID(String pId){
+        
+        return pId;
+    };  
 
     // public boolean equal(Object obj){
     // Patient other = (Patient)obj;
