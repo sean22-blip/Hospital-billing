@@ -1,36 +1,65 @@
 public class Patient {
-    String name;
-    String gender;
-    String pID;
-    String email;
-    String phNumber;
-    // String medicine;
-    // int medQty;
-    // Receipt service;
-    int count = 0;
+    // NO private, NO getters/setters
 
+    // Reference types
+   private String name;
+   private String symptom;
 
-    public Patient( String name, String gender, String pID, String email, String phNumber, String medicine, int medQty){
-        this.name = name;
-        this.gender = gender;
-        this.pID = pID;
-        this.email = email;
-        this.phNumber = phNumber;
-        this.medicine = medicine;
-        this.medQty = medQty;
-        // this.medName.medName = medName.medName;
-        //track how many patients
+    // Primitive types
+    private double wallet;
+    public String getName() {
+        return name;
     }
-    public String getpID(String pId){
-        
-        return pId;
-    };  
 
-    // public boolean equal(Object obj){
-    // Patient other = (Patient)obj;
-    // if(!name.equals(other.name)){
-    //     return false;
-    // }
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSymptom() {
+        return symptom;
+    }
+
+    public void setSymptom(String symptom) {
+        this.symptom = symptom;
+    }
+
+    public double getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(double wallet) {
+        this.wallet = wallet;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public boolean isHasInsurance() {
+        return hasInsurance;
+    }
+
+    public void setHasInsurance(boolean hasInsurance) {
+        this.hasInsurance = hasInsurance;
+    }
+
+    int age;
+    boolean hasInsurance;
+
+    public Patient(String name, double wallet, int age) {
+        this.name = name;
+        this.wallet = wallet;
+        this.age = age;
+        this.symptom = "None";
+        this.hasInsurance = false;
+    }
+
+    @Override
+    public String toString() {
+        return "Patient{name='" + name + "', wallet=" + wallet + "}";
+    }
 }
-
-
