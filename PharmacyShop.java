@@ -1,13 +1,15 @@
+import java.util.ArrayList;
+
 public class PharmacyShop {
     // NO private, NO getters/setters
 
     // Reference types
-    private String shopName;
-    private Medicine[] inventory; // Array of Objects
+    private ArrayList<String> shopName;
+    private ArrayList<Medicine> inventory; // Array of Objects
     
     // Primitives
-   private int medicineCount; // Counter
-   private int nextOrderId;
+   private ArrayList<Integer> medicineCount; // Counter
+   private ArrayList<Integer> nextOrderId;
 
     public String getShopName() {
     return shopName;
@@ -17,7 +19,7 @@ public class PharmacyShop {
     this.shopName = shopName;
    }
 
-   public Medicine[] getInventory() {
+   public Medicine getInventory() {
     return inventory;
    }
 
@@ -61,7 +63,7 @@ public class PharmacyShop {
         for (int i = 0; i < medicineCount; i++) {
             // Null safety check
             if (inventory[i] != null) {
-                if (inventory[i].name.equals(name)) { // Use .equals()
+                if (inventory[i].getName().equals(name)) { // Use .equals()
                     return inventory[i];
                 }
             }

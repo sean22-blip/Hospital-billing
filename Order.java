@@ -1,11 +1,13 @@
+import java.util.ArrayList;
+
 public class Order {
     // References to Objects
-  private  Patient patient;
-   private Pharmacist pharmacist;
+  private ArrayList<Patient> patient;
+   private ArrayList<Pharmacist> pharmacist;
     
     // SNAPSHOT DATA (Arrays to store history)
-   private String[] itemNames;
-   private double[] snapshotPrices; // Primitive array stores price at moment of buy
+   private ArrayList<String> itemNames;
+   private ArrayList<Double> snapshotPrices; // Primitive array stores price at moment of buy
     
     public Patient getPatient() {
     return patient;
@@ -83,7 +85,7 @@ public class Order {
     // This method saves the SNAPSHOT
     public void addItem(Medicine med) {
         if (itemCount < itemNames.length) {
-            this.itemNames[itemCount] = med.name;
+            this.itemNames[itemCount] = med.getName();
             
             // KEY MOMENT: Copy the primitive value!
             // If med.price changes later, this number in the array will NOT change.
@@ -102,6 +104,6 @@ public class Order {
     }
 
     public String receipt() {
-        return "Receipt #" + orderId + " | Sold By: " + pharmacist.name + " | Total: $" + getTotal();
+        return "Receipt #" + orderId + " | Sold By: " + pharmacist.getName() + " | Total: $" + getTotal();
     }
 }

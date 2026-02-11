@@ -1,12 +1,14 @@
+import java.util.ArrayList;
+
 public class Patient {
     // NO private, NO getters/setters
 
     // Reference types
-   private String name;
-   private String symptom;
+   private ArrayList<String> name;
+   private ArrayList<String> symptom;
 
     // Primitive types
-    private double wallet;
+    private ArrayList<Double> wallet;
     public String getName() {
         return name;
     }

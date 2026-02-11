@@ -1,14 +1,17 @@
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class Medicine {
     // NO private, NO getters/setters
     
     // Reference types
-   private String name;
-   private String batchId;
+   private ArrayList<String> name;
+   private ArrayList<String> batchId;
 
     // Primitive types
-    double price;
-    int quantity;
-    boolean requiresPrescription;
+    private ArrayList<Double> price;
+    private ArrayList<Integer> quantity;
+    private ArrayList<Boolean> requiresPrescription;
 
     public String getName() {
         return name;

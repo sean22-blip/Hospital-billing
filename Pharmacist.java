@@ -1,14 +1,16 @@
+import java.util.ArrayList;
+
 public class Pharmacist {
     // NO private, NO getters/setters
 
     // Reference types
-    private String name;
-    private String licenseId;
+    private ArrayList<String> name;
+    private ArrayList<String> licenseId;
 
     // Primitive types
-   private double salary;
-   private int patientsServed;
-   private boolean onShift;
+   private ArrayList<Double> salary;
+   private ArrayList<Integer> patientsServed;
+   private ArrayList<Boolean> onShift;
 
     public Pharmacist(String name, double salary) {
         this.name = name;
