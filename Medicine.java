@@ -5,13 +5,14 @@ public class Medicine {
     // NO private, NO getters/setters
     
     // Reference types
-   private ArrayList<String> name;
-   private ArrayList<String> batchId;
+   private String name;
+   private String batchId;
 
     // Primitive types
-    private ArrayList<Double> price;
-    private ArrayList<Integer> quantity;
-    private ArrayList<Boolean> requiresPrescription;
+  
+    private int quantity;
+    private boolean requiresPrescription;
+    private Double price;
 
     public String getName() {
         return name;
@@ -29,7 +30,7 @@ public class Medicine {
     //     this.batchId = batchId;
     // }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
@@ -53,13 +54,21 @@ public class Medicine {
     //     this.requiresPrescription = requiresPrescription;
     // }
 
-    public Medicine(String name, double price) {
+    public Medicine(String name, Double price) {
         this.name = name;
         this.price = price;
         this.quantity = 0;
         this.requiresPrescription = false;
-        this.batchId = "BATCH-001"; // Default
     }
+
+    // public Medicine(String name, String batchId, Double price,
+    //         Integer quantity, Boolean> requiresPrescription) {
+    //     this.name = name;
+    //     this.batchId = null;
+    //     this.price = price;
+    //     this.quantity = quantity;
+    //     this.requiresPrescription = requiresPrescription;
+    // }
 
     @Override
     public String toString() {

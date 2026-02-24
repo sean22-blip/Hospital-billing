@@ -1,15 +1,33 @@
 import java.util.ArrayList;
 
 public class PharmacyShop {
+
+    public static final String CREATE_STAFF = "CREATE_STAFF";
+    public static final String CREATE_CUSTOMER = "CREATE_CUSTOMER";
+    public static final String CREATE_MENU_ITEM = "CREATE_MENU_ITEM";
+    public static final String SET_MENU_ITEM_AVAILABILITY = "SET_MENU_ITEM_AVAILABILITY";
+    public static final String CREATE_ORDER = "CREATE_ORDER";
+    public static final String VIEW_CUSTOMERS = "VIEW_CUSTOMERS";
+    public static final String VIEW_ORDERS = "VIEW_ORDERS";
+    public static final String UPDATE_ORDER_STATUS = "UPDATE_ORDER_STATUS";
     // NO private, NO getters/setters
 
     // Reference types
-    private ArrayList<String> shopName;
-    private ArrayList<Medicine> inventory; // Array of Objects
+    private String shopName;
+    private Medicine inventory; // Array of Objects
     
     // Primitives
-   private ArrayList<Integer> medicineCount; // Counter
-   private ArrayList<Integer> nextOrderId;
+   private Integer medicineCount; // Counter
+   private Integer nextOrderId;
+    private Double price;
+
+   
+    public PharmacyShop(String shopName, Medicine inventory, Integer medicineCount, Integer nextOrderId) {
+    this.shopName = shopName;
+    this.inventory = inventory;
+    this.medicineCount = medicineCount;
+    this.nextOrderId = nextOrderId;
+}
 
     public String getShopName() {
     return shopName;
@@ -19,52 +37,44 @@ public class PharmacyShop {
     this.shopName = shopName;
    }
 
-   public Medicine getInventory() {
+   public  Medicine getInventory() {
     return inventory;
    }
 
-   public void setInventory(Medicine[] inventory) {
+   public void setInventory(Medicine inventory) {
     this.inventory = inventory;
    }
 
-   public int getMedicineCount() {
+   public Integer getMedicineCount() {
     return medicineCount;
    }
 
-   public void setMedicineCount(int medicineCount) {
+   public void setMedicineCount(Integer medicineCount) {
     this.medicineCount = medicineCount;
    }
 
-   public int getNextOrderId() {
+   public Integer getNextOrderId() {
     return nextOrderId;
    }
 
-   public void setNextOrderId(int nextOrderId) {
+   public void setNextOrderId(Integer nextOrderId) {
     this.nextOrderId = nextOrderId;
    }
 
-    public PharmacyShop(String shopName, int capacity) {
-        this.shopName = shopName;
-        this.inventory = new Medicine[capacity];
-        this.medicineCount = 0;
-        this.nextOrderId = 1;
+    public void addMedicine(ArrayList<String> name, ArrayList<Double> price) {
+      
     }
-
-    public void addMedicine(String name, double price) {
-        if (medicineCount < inventory.length) {
-            Medicine newMed = new Medicine(name, price);
-            this.inventory[medicineCount] = newMed;
-            this.medicineCount++;
-        }
+    public void setPrice(ArrayList<Double> price) {
+        this.price = price.get(0);
     }
 
     // Required Search Method
     public Medicine findMedicineByName(String name) {
         for (int i = 0; i < medicineCount; i++) {
             // Null safety check
-            if (inventory[i] != null) {
-                if (inventory[i].getName().equals(name)) { // Use .equals()
-                    return inventory[i];
+            if (inventory != null) {
+                if (inventory.getName().equals(name)) { // Use .equals()
+                    return inventory;
                 }
             }
         }
@@ -72,17 +82,22 @@ public class PharmacyShop {
     }
 
     // Required: createOrder
-    public Order createOrder(Patient patient, Pharmacist pharmacist) {
-        // Create a new order with capacity for 5 items
-        Order newOrder = new Order(nextOrderId, patient, pharmacist, 5);
-        nextOrderId++;
-        return newOrder;
+    // public Order createOrder(Patient patient, Pharmacist pharmacist) {
+    //     // Create a new order with capacity for 5 items
+    //    Order newOrder = new Order(nextOrderId, patient, pharmacist, 5);
+    //     nextOrderId++;
+    //     return newOrder;
+    // }
+    
+    // public void printMenu() {
+    //     System.out.println("--- " + shopName + " Menu ---");
+    //     for(int i=0; i< medicineCount; i++) {
+    //          System.out.println(inventory[i].toString());
+    //     }
+    // }
+
+    public String printMenu() {
+        return "PharmacyShop [inventory=" + inventory + "]";
     }
     
-    public void printMenu() {
-        System.out.println("--- " + shopName + " Menu ---");
-        for(int i=0; i<medicineCount; i++) {
-             System.out.println(inventory[i].toString());
-        }
-    }
 }

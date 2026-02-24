@@ -1,109 +1,82 @@
 import java.util.ArrayList;
 
+import javax.swing.plaf.basic.BasicLookAndFeel;
+
 public class Order {
     // References to Objects
-  private ArrayList<Patient> patient;
-   private ArrayList<Pharmacist> pharmacist;
+  private Patient patient;
+   private Pharmacist pharmacist;
+     // Primitives
+   private Integer itemCount;
+   private Integer orderId;
+   private Boolean isPaid;
+
     
     // SNAPSHOT DATA (Arrays to store history)
-   private ArrayList<String> itemNames;
-   private ArrayList<Double> snapshotPrices; // Primitive array stores price at moment of buy
+   private String itemNames;
+   private Double snapshotPrices; // Primitive array stores price at moment of buy
     
+     public Order(Patient patient, Pharmacist pharmacist, String itemNames,
+            Double snapshotPrices, Integer itemCount, Integer orderId,
+            Boolean isPaid) {
+        this.patient = patient;
+        this.pharmacist = pharmacist;
+        this.itemNames = itemNames;
+        this.snapshotPrices = snapshotPrices;
+        this.itemCount = itemCount;
+        this.orderId = orderId;
+        this.isPaid = isPaid;
+    }
+
     public Patient getPatient() {
     return patient;
 }
-
-   public void setPatient(Patient patient) {
-    this.patient = patient;
-   }
 
    public Pharmacist getPharmacist() {
     return pharmacist;
    }
 
-//    public void setPharmacist(Pharmacist pharmacist) {
-//     this.pharmacist = pharmacist;
-//    }
-
-   public String[] getItemNames() {
+   public String getItemNames() {
     return itemNames;
    }
 
-//    public void setItemNames(String[] itemNames) {
-//     this.itemNames = itemNames;
-//    }
-
-   public double[] getSnapshotPrices() {
+   public Double getSnapshotPrices() {
     return snapshotPrices;
    }
 
-//    public void setSnapshotPrices(double[] snapshotPrices) {
-//     this.snapshotPrices = snapshotPrices;
-//    }
 
-   public int getItemCount() {
+
+   public Integer getItemCount() {
     return itemCount;
    }
 
-//    public void setItemCount(int itemCount) {
-//     this.itemCount = itemCount;
-//    }
+   public void createOrder(Patient patient, Pharmacist pharmacist) {
+    
+    }
 
-   public int getOrderId() {
+   public Integer getOrderId() {
     return orderId;
    }
 
-//    public void setOrderId(int orderId) {
-//     this.orderId = orderId;
-//    }
 
-   public boolean isPaid() {
+   public Boolean isPaid() {
     return isPaid;
    }
 
-//    public void setPaid(boolean isPaid) {
-//     this.isPaid = isPaid;
-//    }
-
-   // Primitives
-   private int itemCount;
-   private int orderId;
-   private boolean isPaid;
-
-    public Order(int orderId, Patient patient, Pharmacist pharmacist, int capacity) {
-        this.orderId = orderId;
-        this.patient = patient;
-        this.pharmacist = pharmacist;
-        
-        // Initialize arrays
-        this.itemNames = new String[capacity];
-        this.snapshotPrices = new double[capacity];
-        this.itemCount = 0;
-        this.isPaid = false;
-    }
-
-    // This method saves the SNAPSHOT
-    public void addItem(Medicine med) {
-        if (itemCount < itemNames.length) {
-            this.itemNames[itemCount] = med.getName();
-            
-            // KEY MOMENT: Copy the primitive value!
-            // If med.price changes later, this number in the array will NOT change.
-            this.snapshotPrices[itemCount] = med.price;
-            
-            this.itemCount++;
-        }
-    }
 
     public double getTotal() {
         double total = 0;
         for (int i = 0; i < itemCount; i++) {
-            total = total + snapshotPrices[i];
+            total = total + snapshotPrices;
         }
         return total;
     }
 
     public String receipt() {
-        return "Receipt #" + orderId + " | Sold By: " + pharmacist.getName() + " | Total: $" + getTotal();
+        return "Receipt #" + orderId + " | Sold By: " + pharmacist.getFullname() + " | Total: $" + getTotal();
+    }
+
+    public Boolean getIsPaid() {
+        return isPaid;
     }
 }

@@ -1,6 +1,4 @@
-import java.util.ArrayList;
-
-public class Pharmacist implements Istaff {
+public class ManagerStaff implements Istaff {
     private String staffID;
     private String fullName;
     private String phNumber;
@@ -8,25 +6,27 @@ public class Pharmacist implements Istaff {
     private String position;
     private boolean active;
     private String username;
-
+    
     @Override
     public boolean can(String action) {
         return true;
     }
-
-    public Pharmacist(String staffID, String fullName, String phNumber, String password, String position,
+    public ManagerStaff(String staffID, String fullName, String phNumber, String password, String position,
             String username,
             boolean active) {
-
+        setStaffId(staffID);
+        setFullName(fullName);
+        setPhone(phNumber);
+        setUsername(username);
         setPassword(password);
+        setPosition(position);
         this.active = true;
     }
-
-    public boolean isActive() {
+    public boolean isActive(){
         return active;
     }
     public String getStaffID() {
-    return staffID;
+        return staffID;
     }
 
     public String getUsername() {
@@ -41,41 +41,42 @@ public class Pharmacist implements Istaff {
         return password;
     }
 
+    
     public String getFullname() {
         return fullName;
     }
-
-    public void setPassword(String passwort) {
+    
+    public void setActive(boolean active){
+        this.active = active;
     }
 
-    // public void getStaffID(String staffId) {
+    public void setStaffId(String staffId){
 
-    // }
-    // public void setActive(boolean active){
-    // this.active = active;
-    // }
+    }
+    public void setFullName(String fullName){
 
-    // public void setStaffId(String staffId){
+    }
+    public void setPhone(String phNumber){
 
-    // }
-    // public void setFullName(String fullName){
+    }
+    public void setUsername(String username){
 
-    // }
-    // public void setPhone(String phNumber){
+    }
+    public void setPassword(String passwort){
 
-    // }
-    // public void setUsername(String username){
+    }
+    public void setPosition(String position){
 
-    // }
+    }
 
-    // public void setPosition(String position){
 
-    // }
 
     @Override
     public String toString() {
         return "ManagerStaff [staffID=" + staffID + ", fullName=" + fullName + ", phNumber=" + phNumber + ", position="
                 + position + ", active=" + active + ", username=" + username + "]";
     }
+
+    
 
 }
