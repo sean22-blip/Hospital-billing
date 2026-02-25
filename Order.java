@@ -16,17 +16,18 @@ public class Order {
    private String itemNames;
    private Double snapshotPrices; // Primitive array stores price at moment of buy
     
-     public Order(Patient patient, Pharmacist pharmacist, String itemNames,
-            Double snapshotPrices, Integer itemCount, Integer orderId,
-            Boolean isPaid) {
-        this.patient = patient;
-        this.pharmacist = pharmacist;
-        this.itemNames = itemNames;
-        this.snapshotPrices = snapshotPrices;
-        this.itemCount = itemCount;
-        this.orderId = orderId;
-        this.isPaid = isPaid;
-    }
+    
+
+    public Order(Patient patient, Pharmacist pharmacist, Integer itemCount, Integer orderId, Boolean isPaid,
+        String itemNames, Double snapshotPrices) {
+    this.patient = patient;
+    this.pharmacist = pharmacist;
+    this.itemCount = itemCount;
+    this.orderId = orderId;
+    this.isPaid = isPaid;
+    this.itemNames = itemNames;
+    this.snapshotPrices = snapshotPrices;
+}
 
     public Patient getPatient() {
     return patient;
@@ -34,6 +35,7 @@ public class Order {
 
    public Pharmacist getPharmacist() {
     return pharmacist;
+
    }
 
    public String getItemNames() {

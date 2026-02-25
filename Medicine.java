@@ -10,9 +10,20 @@ public class Medicine {
 
     // Primitive types
   
-    private int quantity;
-    private boolean requiresPrescription;
+    private Integer quantity;
+    private Boolean requiresPrescription;
     private Double price;
+
+
+      
+
+    public Medicine(String name, String batchId, Integer quantity, Boolean requiresPrescription, Double price) {
+        this.name = name;
+        this.batchId = batchId;
+        this.quantity = quantity;
+        this.requiresPrescription = requiresPrescription;
+        this.price = price;
+    }
 
     public String getName() {
         return name;
@@ -38,7 +49,7 @@ public class Medicine {
     //     this.price = price;
     // }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
@@ -48,30 +59,12 @@ public class Medicine {
 
     public boolean isRequiresPrescription() {
         return requiresPrescription;
-    }
-
-    // public void setRequiresPrescription(boolean requiresPrescription) {
-    //     this.requiresPrescription = requiresPrescription;
-    // }
-
-    public Medicine(String name, Double price) {
-        this.name = name;
-        this.price = price;
-        this.quantity = 0;
-        this.requiresPrescription = false;
-    }
-
-    // public Medicine(String name, String batchId, Double price,
-    //         Integer quantity, Boolean> requiresPrescription) {
-    //     this.name = name;
-    //     this.batchId = null;
-    //     this.price = price;
-    //     this.quantity = quantity;
-    //     this.requiresPrescription = requiresPrescription;
-    // }
+    }   
 
     @Override
     public String toString() {
         return "Medicine{name='" + name + "', price=" + price + "}";
     }
+
+  
 }

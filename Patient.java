@@ -6,40 +6,30 @@ public class Patient {
     // Reference types
    private String name;
    private String symptom;
+    private Integer age;
+    private Boolean hasInsurance;
 
+     public Patient(ArrayList<String> name, ArrayList<String> symptom, ArrayList<Integer> age, ArrayList<Boolean> hasInsurance) {
+        this.name = name.get(0);
+        this.symptom = symptom.get(0);
+        this.age = age.get(0);
+        this.hasInsurance = hasInsurance.get(0);
+    }
     // Primitive types
-    private ArrayList<Double> wallet;
+    
+   
     public String getName() {
         return name;
     }
-
-    // public void setName(String name) {
-    //     this.name = name;
-    // }
 
     public String getSymptom() {
         return symptom;
     }
 
-    // public void setSymptom(String symptom) {
-    //     this.symptom = symptom;
-    // }
-
-    // public double getWallet() {
-    //     return wallet;
-    // }
-
-    // public void setWallet(double wallet) {
-    //     this.wallet = wallet;
-    // }
-
     public int getAge() {
         return age;
     }
 
-    // public void setAge(int age) {
-    //     this.age = age;
-    // }
 
     public boolean isHasInsurance() {
         return hasInsurance;
@@ -49,18 +39,9 @@ public class Patient {
         this.hasInsurance = hasInsurance;
     }
 
-    int age;
-    boolean hasInsurance;
-
-    public Patient(String name, int age) {
-        this.name = name;
-        this.age = age;
-        this.symptom = "None";
-        this.hasInsurance = false;
-    }
-
+   
     @Override
     public String toString() {
-        return "Patient{name='" + name + "', wallet=" + wallet + "}";
+        return "Patient{name='" + name + "', symptom='" + symptom + "', age=" + age + ", hasInsurance=" + hasInsurance + "}";
     }
 }

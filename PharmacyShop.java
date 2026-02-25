@@ -14,90 +14,56 @@ public class PharmacyShop {
 
     // Reference types
     private String shopName;
-    private Medicine inventory; // Array of Objects
-    
+    private ArrayList<Medicine> inventory; // Array of Objects
+
     // Primitives
-   private Integer medicineCount; // Counter
-   private Integer nextOrderId;
+    private Integer medicineCount; // Counter
+    private Integer nextOrderId;
     private Double price;
 
-   
-    public PharmacyShop(String shopName, Medicine inventory, Integer medicineCount, Integer nextOrderId) {
-    this.shopName = shopName;
-    this.inventory = inventory;
-    this.medicineCount = medicineCount;
-    this.nextOrderId = nextOrderId;
-}
+    public PharmacyShop(String shopName, ArrayList<Medicine> inventory, Integer medicineCount, Integer nextOrderId) {
+        this.shopName = shopName;
+        this.inventory = inventory;
+        this.medicineCount = medicineCount;
+        this.nextOrderId = nextOrderId;
+    }
 
     public String getShopName() {
-    return shopName;
-}
-
-   public void setShopName(String shopName) {
-    this.shopName = shopName;
-   }
-
-   public  Medicine getInventory() {
-    return inventory;
-   }
-
-   public void setInventory(Medicine inventory) {
-    this.inventory = inventory;
-   }
-
-   public Integer getMedicineCount() {
-    return medicineCount;
-   }
-
-   public void setMedicineCount(Integer medicineCount) {
-    this.medicineCount = medicineCount;
-   }
-
-   public Integer getNextOrderId() {
-    return nextOrderId;
-   }
-
-   public void setNextOrderId(Integer nextOrderId) {
-    this.nextOrderId = nextOrderId;
-   }
-
-    public void addMedicine(ArrayList<String> name, ArrayList<Double> price) {
-      
+        return shopName;
     }
-    public void setPrice(ArrayList<Double> price) {
-        this.price = price.get(0);
+
+    public void setShopName(String shopName) {
+        this.shopName = shopName;
+    }
+
+    public void addMedicine(String name, Double price, String batchId, Integer quantity, Boolean requiresPrescription) {
+        inventory.add(new Medicine(name, batchId, quantity, requiresPrescription, price));
+        medicineCount++;
+    }
+
+    public Integer getMedicineCount() {
+        return medicineCount;
+    }
+
+    public Integer getNextOrderId() {
+        return nextOrderId;
+    }
+
+    public void setNextOrderId(Integer nextOrderId) {
+        this.nextOrderId = nextOrderId;
     }
 
     // Required Search Method
     public Medicine findMedicineByName(String name) {
-        for (int i = 0; i < medicineCount; i++) {
-            // Null safety check
-            if (inventory != null) {
-                if (inventory.getName().equals(name)) { // Use .equals()
-                    return inventory;
-                }
-            }
-        }
         return null; // Return null if not found
     }
 
-    // Required: createOrder
-    // public Order createOrder(Patient patient, Pharmacist pharmacist) {
-    //     // Create a new order with capacity for 5 items
-    //    Order newOrder = new Order(nextOrderId, patient, pharmacist, 5);
-    //     nextOrderId++;
-    //     return newOrder;
-    // }
-    
-    // public void printMenu() {
-    //     System.out.println("--- " + shopName + " Menu ---");
-    //     for(int i=0; i< medicineCount; i++) {
-    //          System.out.println(inventory[i].toString());
-    //     }
-    // }
-
-    public String printMenu() {
-        return "PharmacyShop [inventory=" + inventory + "]";
+    @Override
+    public String toString() {
+        return "PharmacyShop [\nShopName: " + shopName + ", \nInventory: " + inventory + ", \nMedicineCount: " + medicineCount
+                + ", \nNextOrderId: " + nextOrderId + ", \nPrice: " + price + "]";
     }
+
     
+
 }

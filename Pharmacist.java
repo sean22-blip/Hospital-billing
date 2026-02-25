@@ -6,7 +6,7 @@ public class Pharmacist implements Istaff {
     private String phNumber;
     private String password;
     private String position;
-    private boolean active;
+    private Boolean active;
     private String username;
 
     @Override
@@ -16,17 +16,20 @@ public class Pharmacist implements Istaff {
 
     public Pharmacist(String staffID, String fullName, String phNumber, String password, String position,
             String username,
-            boolean active) {
+            Boolean active) {
 
+        setPhone(phNumber);
+        setUsername(username);
         setPassword(password);
-        this.active = true;
+        this.active = active;
     }
 
     public boolean isActive() {
         return active;
     }
+
     public String getStaffID() {
-    return staffID;
+        return staffID;
     }
 
     public String getUsername() {
@@ -45,32 +48,18 @@ public class Pharmacist implements Istaff {
         return fullName;
     }
 
-    public void setPassword(String passwort) {
+    public void setPassword(String password) {
     }
 
-    // public void getStaffID(String staffId) {
+    public void getMedicineName(Medicine medicine) {
+        System.out.println("Medicine Name: " + medicine.getName());
+    }
 
-    // }
-    // public void setActive(boolean active){
-    // this.active = active;
-    // }
+    public void setPhone(String phNumber) {
+    }
 
-    // public void setStaffId(String staffId){
-
-    // }
-    // public void setFullName(String fullName){
-
-    // }
-    // public void setPhone(String phNumber){
-
-    // }
-    // public void setUsername(String username){
-
-    // }
-
-    // public void setPosition(String position){
-
-    // }
+    public void setUsername(String username) {
+    }
 
     @Override
     public String toString() {
