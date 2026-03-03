@@ -1,27 +1,27 @@
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+package other;
+import user.ManagerStaff;
 
 public class Medicine {
     // NO private, NO getters/setters
     
     // Reference types
+    ManagerStaff manager; // Single Object
    private String name;
    private String batchId;
+   private String password;
 
     // Primitive types
   
     private Integer quantity;
-    private Boolean requiresPrescription;
     private Double price;
 
 
       
 
-    public Medicine(String name, String batchId, Integer quantity, Boolean requiresPrescription, Double price) {
+    public Medicine(String name, String batchId, Integer quantity, Double price) {
         this.name = name;
         this.batchId = batchId;
         this.quantity = quantity;
-        this.requiresPrescription = requiresPrescription;
         this.price = price;
     }
 
@@ -29,37 +29,25 @@ public class Medicine {
         return name;
     }
 
-    // public void setName(String name) {
-    //     this.name = name;
-    // }
-
     public String getBatchId() {
         return batchId;
     }
-
-    // public void setBatchId(String batchId) {
-    //     this.batchId = batchId;
-    // }
 
     public Double getPrice() {
         return price;
     }
 
-    // public void setPrice(double price) {
-    //     this.price = price;
-    // }
 
     public Integer getQuantity() {
         return quantity;
     }
-
-    // public void setQuantity(int quantity) {
-    //     this.quantity = quantity;
-    // }
-
-    public boolean isRequiresPrescription() {
-        return requiresPrescription;
-    }   
+     
+    public boolean isAvailable() {
+        return quantity > 0;
+    }
+    public int getStock() {
+        return quantity;
+    }
 
     @Override
     public String toString() {

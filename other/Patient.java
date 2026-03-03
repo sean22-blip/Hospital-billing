@@ -1,19 +1,25 @@
+package other;
+
 import java.util.ArrayList;
+
+import user.Pharmacist;
+
 
 public class Patient {
     // NO private, NO getters/setters
 
     // Reference types
+    private ArrayList<Pharmacist> pharmacists = new ArrayList<>();
    private String name;
    private String symptom;
     private Integer age;
     private Boolean hasInsurance;
 
-     public Patient(ArrayList<String> name, ArrayList<String> symptom, ArrayList<Integer> age, ArrayList<Boolean> hasInsurance) {
-        this.name = name.get(0);
-        this.symptom = symptom.get(0);
-        this.age = age.get(0);
-        this.hasInsurance = hasInsurance.get(0);
+     public Patient(String name, String symptom, Integer age, Boolean hasInsurance) {
+        this.name = name;
+        this.symptom = symptom;
+        this.age = age;
+        this.hasInsurance = hasInsurance;
     }
     // Primitive types
     
@@ -31,12 +37,18 @@ public class Patient {
     }
 
 
-    public boolean isHasInsurance() {
+    public boolean HasInsurance() {
         return hasInsurance;
     }
 
     public void setHasInsurance(boolean hasInsurance) {
         this.hasInsurance = hasInsurance;
+    }
+    public void getPatientInfo() {
+        System.out.println("Patient Name: " + name);
+        System.out.println("Symptom: " + symptom);
+        System.out.println("Age: " + age);
+        System.out.println("Has Insurance: " + (hasInsurance ? "Yes" : "No"));
     }
 
    

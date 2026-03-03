@@ -1,6 +1,5 @@
-import java.util.ArrayList;
-
-import javax.swing.plaf.basic.BasicLookAndFeel;
+package other;
+import user.Pharmacist;
 
 public class Order {
     // References to Objects
@@ -76,9 +75,5 @@ public class Order {
 
     public String receipt() {
         return "Receipt #" + orderId + " | Sold By: " + pharmacist.getFullname() + " | Total: $" + getTotal();
-    }
-
-    public Boolean getIsPaid() {
-        return isPaid;
     }
 }
