@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import other.Medicine;
 
 public class Pharmacist extends Staff {
-    ArrayList<Medicine> medicines;
-   private double salary;
 
     @Override
     public boolean can(String action) {
@@ -15,7 +13,6 @@ public class Pharmacist extends Staff {
         }
         return false;
     }
-
      public Pharmacist(Staff p, double salary) {
         super(p.getFullname(), p.getStaffID(), p.getPhNumber(), p.getPassword(), p.getPosition(), p.getActive(),
                 p.getUsername());

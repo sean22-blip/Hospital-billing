@@ -3,9 +3,7 @@ package user;
 import java.util.ArrayList;
 
 public class ManagerStaff extends Staff {
-    ArrayList<Pharmacist> pharmacists;
 
-    private Double salary;
 
     @Override
     public boolean can(String action) {
@@ -39,8 +37,7 @@ public class ManagerStaff extends Staff {
 
     @Override
     public String toString() {
-        return "ManagerStaff [staffID=" + this.getStaffID() + ", fullName=" + getFullname() + ", phNumber="
-                + this.getPhNumber() + ", position=" + this.getPosition() + ", active=" + this.isActive()
-                + ", username=" + this.getUsername() + ", salary=" + this.getSalary(0) + "]";
+        return "ManagerStaff [staffID=" + getStaffID() + ", position=" + getPosition() + "]";
     }
+    
 }

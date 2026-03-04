@@ -1,35 +1,32 @@
 package user;
-import java.util.ArrayList;
-
-import other.Medicine;
 
 public class Staff implements IStaff {
-    ArrayList<Pharmacist> pharmacists;
-    ArrayList<Medicine> medicines;
     private String fullName;
     private String staffID;
     private String phNumber;
     private String password;
     private String position;
     private Boolean active;
-    private String username;    
+    private String username;
+    private Double salary;
 
     @Override
     public boolean can(String action) {
         return false;
     }
+
     public Staff(String fullName, String staffID, String phNumber, String password,
             String position, Boolean active, String username) {
-                setStaffID(staffID);
-                setFullname(fullName);
-                setPhNumber(phNumber);
-                setUsername(username);
-                setPassword(password);
-                this.active = active;
-                System.out.println(("1) Staff Constructor "));
+        setStaffID(staffID);
+        setFullname(fullName);
+        setPhNumber(phNumber);
+        setUsername(username);
+        setPassword(password);
+        this.active = active;
+        System.out.println(("1) Staff Constructor "));
     }
 
-    //Getters
+    // Getters
     public String getStaffID() {
         return staffID;
     }
@@ -58,7 +55,7 @@ public class Staff implements IStaff {
         return username;
     }
 
-    //Setters
+    // Setters
     public void setStaffID(String staffID) {
         this.staffID = staffID;
     }
@@ -109,10 +106,21 @@ public class Staff implements IStaff {
             return false;
         }
     }
+     @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Staff that = (Staff) obj;
+        return this.getStaffID().equals(that.getStaffID());
+    }
+
 
     @Override
     public String toString() {
-        return "ManagerStaff [staffID=" + staffID + ", fullName=" + getFullname() + ", phNumber=" + phNumber + ", position="
+        return "Staff [staffID=" + staffID + ", fullName=" + getFullname() + ", phNumber=" + phNumber
+                + ", position="
                 + position + ", active=" + active + ", username=" + username + "]";
     }
 }

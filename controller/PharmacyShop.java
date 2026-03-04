@@ -25,10 +25,9 @@ public class PharmacyShop {
     // Reference types
     private String shopName;
     private ArrayList<Medicine> inventory;  // Array of Objects
-    private ArrayList<Pharmacist> pharmacists;
     private ArrayList<Patient> patients;
-    private ArrayList<Order> orders;
-    private ManagerStaff manager; // Single Object
+    private ArrayList<Staff> staffs;
+    private ArrayList<Order> orders; // Single Object
     // Primitives
     private Integer medicineCount = 0; // Counter
     private Integer pharmacistCount = 0 ; // Counter
@@ -39,7 +38,6 @@ public class PharmacyShop {
     this.shopName = shopName;
     this.password = password;
     this.inventory = new ArrayList<>();    
-    this.pharmacists = new ArrayList<>();  
     this.medicineCount = 0;       
 
 }
@@ -93,7 +91,9 @@ public class PharmacyShop {
     Scanner scanner = new Scanner(System.in);
     System.out.println("Enter medicine for" + patient.getName() + ":");
     String requireMedicine = scanner.nextLine();
-    order.getTotal(requireMedicine);
+    System.out.println("Enter quantity for: " + requireMedicine);
+    int quantity = scanner.nextInt();
+    order.getTotal(requireMedicine, quantity);
     }
 
     public void viewCustomers() {
