@@ -1,6 +1,6 @@
 package other;
 import user.Pharmacist;
-
+import controller.PharmacyShop;
 public class Order {
     // References to Objects
   private Patient patient;
@@ -51,10 +51,6 @@ public class Order {
     return itemCount;
    }
 
-   public void createOrder(Patient patient, Pharmacist pharmacist) {
-    
-    }
-
    public Integer getOrderId() {
     return orderId;
    }
@@ -65,12 +61,8 @@ public class Order {
    }
 
 
-    public double getTotal() {
-        double total = 0;
-        for (int i = 0; i < itemCount; i++) {
-            total = total + snapshotPrices;
-        }
-        return total;
+    public String getTotal(String medicineName) {
+        double total = 0.0;
     }
 
     public String receipt() {

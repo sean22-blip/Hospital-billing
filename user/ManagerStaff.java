@@ -2,7 +2,7 @@ package user;
 
 import java.util.ArrayList;
 
-public class ManagerStaff extends Staff implements IStaff {
+public class ManagerStaff extends Staff {
     ArrayList<Pharmacist> pharmacists;
 
     private Double salary;
