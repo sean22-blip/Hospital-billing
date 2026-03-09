@@ -1,6 +1,6 @@
 package user;
 
-public class Staff implements IStaff {
+public abstract class Staff implements IStaff {
     private String fullName;
     private String staffID;
     private String phNumber;
@@ -23,7 +23,7 @@ public class Staff implements IStaff {
         setUsername(username);
         setPassword(password);
         this.active = active;
-        System.out.println(("1) Staff Constructor "));
+        System.out.println(("1) Calling from Staff Constructor "));
     }
 
     // Getters

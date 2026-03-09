@@ -1,32 +1,33 @@
 package other;
 
 import user.Pharmacist;
-import controller.PharmacyShop;
 
 public class Order {
+
     // References to Objects
-    Medicine medicine; // Single Object
     private Patient patient;
     private Pharmacist pharmacist;
+    Medicine medicine;
     // Primitives
-    private Integer itemCount;
-    private Integer orderId;
-    private Boolean isPaid;
-    private Double total;
+    private int itemCount;
+    private int orderId;
+    private boolean isPaid;
+    private double total;
+    private int quantity;
 
-    // SNAPSHOT DATA (Arrays to store history)
     private String itemNames;
     private Double snapshotPrices; // Primitive array stores price at moment of buy
 
-    public Order(Patient patient, Pharmacist pharmacist, Integer itemCount, Integer orderId, Boolean isPaid,
-            String itemNames, Double snapshotPrices) {
+    public Order(Patient patient, Pharmacist pharmacist, Medicine medicine, int quantity) {
+        this.orderId = orderId;
         this.patient = patient;
         this.pharmacist = pharmacist;
-        this.itemCount = itemCount;
-        this.orderId = orderId;
-        this.isPaid = isPaid;
-        this.itemNames = itemNames;
-        this.snapshotPrices = snapshotPrices;
+        this.medicine = medicine;
+        this.quantity = quantity;
+
+        if (medicine.isAvailable() && medicine.getStock() >= quantity) {
+            this.total = medicine.getPrice() * quantity;
+        }
     }
 
     public Patient getPatient() {
@@ -58,16 +59,22 @@ public class Order {
         return isPaid;
     }
 
-    public void getTotal(String medicineName, int quantity) {
-        if(medicineName.equals(medicine.getName()) && medicine.isAvailable() && medicine.getStock() >= quantity) {
+    public void calculateTotal(String medicineName, int quantity) {
+        if (medicineName.equals(medicine.getName()) && medicine.isAvailable() && medicine.getStock() >= quantity) {
             total = medicine.getPrice() * quantity;
-        }else{
-            System.out.println("Medicine not available or insufficient stock.");
+        } else {
+            total = 0.00;
         }
-        
+    }
+
+    public Double getTotal() {
+        return total;
     }
 
     public String receipt() {
-        return "Receipt #" + orderId + " | Sold By: " + pharmacist.getFullname() + " | Total: $" + total;
+        return "Receipt #" + orderId
+         + " | Sold By: " + pharmacist.getFullname() 
+         + " |Patient: " + patient.toString() 
+         + " | Total: $" + total;
     }
 }

@@ -2,13 +2,11 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
 import other.Medicine;
+import other.Order;
 import other.Patient;
-import user.ManagerStaff;
 import user.Pharmacist;
 import user.Staff;
-import other.Order;
 
 public class PharmacyShop {
 
@@ -30,17 +28,20 @@ public class PharmacyShop {
     private ArrayList<Order> orders; // Single Object
     // Primitives
     private Integer medicineCount = 0; // Counter
-    private Integer pharmacistCount = 0 ; // Counter
+    private Integer pharmacistCount = 0; // Counter
     private Double price;
     private String password;
 
     public PharmacyShop(String shopName, String password) {
-    this.shopName = shopName;
-    this.password = password;
-    this.inventory = new ArrayList<>();    
-    this.medicineCount = 0;       
+        this.shopName = shopName;
+        this.password = password;
+        this.inventory = new ArrayList<>();
+        this.patients = new ArrayList<>();
+        this.staffs = new ArrayList<>();
+        this.orders = new ArrayList<>();
+        this.medicineCount = 0;
 
-}
+    }
 
     public String getShopName() {
         return shopName;
@@ -60,11 +61,12 @@ public class PharmacyShop {
     }
 
     // Required Search Method
-    
-
     public void createStaff(Pharmacist pharmacist) {
-        pharmacists.add(pharmacist);
         pharmacistCount++;
+    }
+
+    public void createPatient(Patient patient) {
+        patients.add(patient);
     }
 
     public void createMenuItem(Medicine medicine) {
@@ -80,20 +82,18 @@ public class PharmacyShop {
             }
         }
     }
-    public void createPatient(Patient patient) {
-        patients.add(patient);
-    }
 
     public void createOrder(Patient patient, Staff staff) {
-     // Implementation for creating an order
-     System.out.println("Order created for patient: " + patient.getName() + " by staff: " + staff.getFullname());
-    checkMenu();
-    Scanner scanner = new Scanner(System.in);
-    System.out.println("Enter medicine for" + patient.getName() + ":");
-    String requireMedicine = scanner.nextLine();
-    System.out.println("Enter quantity for: " + requireMedicine);
-    int quantity = scanner.nextInt();
-    order.getTotal(requireMedicine, quantity);
+        // Implementation for creating an order]
+
+        System.out.println("Order created for patient: " + patient.getName() + " by staff: " + staff.getFullname());
+        checkMenu();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter medicine for" + patient.getName() + ":");
+        String requireMedicine = scanner.nextLine();
+        System.out.println("Enter quantity for: " + requireMedicine);
+        int quantity = scanner.nextInt();
+        System.out.println("Creating order...");
     }
 
     public void viewCustomers() {
@@ -101,8 +101,13 @@ public class PharmacyShop {
 
     public void updateOrderStatus() {
     }
-    public void checkMenu(){
-        if(inventory.isEmpty()){
+
+    public void viewOrder(Order order) {
+        
+    }
+
+    public void checkMenu() {
+        if (inventory.isEmpty()) {
             System.out.println("No medicines available in the inventory.");
         } else {
             System.out.println("Available Medicines:");
