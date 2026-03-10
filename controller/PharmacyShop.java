@@ -27,14 +27,16 @@ public class PharmacyShop {
     private ArrayList<Staff> staffs;
     private ArrayList<Order> orders; // Single Object
     // Primitives
-    private Integer medicineCount = 0; // Counter
-    private Integer pharmacistCount = 0; // Counter
-    private Double price;
+    private int medicineCount = 0; // Counter
+    private int pharmacistCount = 0; // Counter
+    private double price;
     private String password;
+    private String address;
 
-    public PharmacyShop(String shopName, String password) {
+    public PharmacyShop(String shopName, String password, String address) {
         this.shopName = shopName;
         this.password = password;
+        this.address = address;
         this.inventory = new ArrayList<>();
         this.patients = new ArrayList<>();
         this.staffs = new ArrayList<>();

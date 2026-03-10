@@ -7,13 +7,12 @@ public class Patient {
     // NO private, NO getters/setters
 
     // Reference types
-    private ArrayList<Pharmacist> pharmacists = new ArrayList<>();
     private String name;
     private String symptom;
-    private Integer age;
-    private Boolean hasInsurance;
+    private int age;
+    private boolean hasInsurance;
 
-    public Patient(String name, String symptom, Integer age, Boolean hasInsurance) {
+    public Patient(String name, String symptom, int age, boolean hasInsurance) {
         this.name = name;
         this.symptom = symptom;
         this.age = age;

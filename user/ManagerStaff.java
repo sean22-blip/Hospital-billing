@@ -28,4 +28,9 @@ public class ManagerStaff extends Staff {
     public boolean can(String action) {
         return true;
     }
+
+    @Override
+    public String toString(){
+        return "";
+    }
 }

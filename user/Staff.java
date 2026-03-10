@@ -6,9 +6,9 @@ public abstract class Staff implements IStaff {
     private String phNumber;
     private String password;
     private String position;
-    private Boolean active;
+    private boolean active;
     private String username;
-    private Double salary;
+    private double salary;
 
     @Override
     public boolean can(String action) {
@@ -16,12 +16,13 @@ public abstract class Staff implements IStaff {
     }
 
     public Staff(String fullName, String staffID, String phNumber, String password,
-            String position, Boolean active, String username) {
+            String position, boolean active, String username) {
         setStaffID(staffID);
         setFullname(fullName);
         setPhNumber(phNumber);
         setUsername(username);
         setPassword(password);
+        setPosition(position);
         this.active = active;
         System.out.println(("1) Calling from Staff Constructor "));
     }
