@@ -1,15 +1,13 @@
 package user;
 
+import controller.PharmacyShop;
+
 public class ManagerStaff extends Staff {
 
     public ManagerStaff(Staff m, double salary) {
         super(m.getFullname(), m.getStaffID(), m.getPhNumber(), m.getPassword(), m.getPosition(), m.getActive(),
-                m.getUsername());
+                m.getUsername(), m.getSalary(), m.getEmail());
         System.out.println("Calling from ManagerStaff constructor!");
-    }
-
-    public double getSalary(double salary) {
-        return salary;
     }
 
     @Override
@@ -26,7 +24,7 @@ public class ManagerStaff extends Staff {
 
     @Override
     public boolean can(String action) {
-        return true;
+        return action.equals(PharmacyShop.VIEW_CUSTOMERS);
     }
 
     @Override

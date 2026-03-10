@@ -1,9 +1,10 @@
 package user;
 
-public abstract class Staff implements IStaff {
+public class Staff implements IStaff {
     private String fullName;
     private String staffID;
     private String phNumber;
+    private String email;
     private String password;
     private String position;
     private boolean active;
@@ -16,13 +17,15 @@ public abstract class Staff implements IStaff {
     }
 
     public Staff(String fullName, String staffID, String phNumber, String password,
-            String position, boolean active, String username) {
+            String position, boolean active, String username, double salary, String email) {
         setStaffID(staffID);
         setFullname(fullName);
         setPhNumber(phNumber);
         setUsername(username);
         setPassword(password);
         setPosition(position);
+        setEmail(email);
+        setActive(active);
         this.active = active;
         System.out.println(("1) Calling from Staff Constructor "));
     }
@@ -35,7 +38,9 @@ public abstract class Staff implements IStaff {
     public String getPhNumber() {
         return phNumber;
     }
-
+    public String getEmail() {
+        return email;
+    }
     public String getPassword() {
         return password;
     }
@@ -55,6 +60,9 @@ public abstract class Staff implements IStaff {
     public String getUsername() {
         return username;
     }
+    public double getSalary() {
+       return salary;
+    }
 
     // Setters
     public void setStaffID(String staffID) {
@@ -63,6 +71,9 @@ public abstract class Staff implements IStaff {
 
     public void setPhNumber(String phNumber) {
         this.phNumber = phNumber;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String setPassword(String password) {

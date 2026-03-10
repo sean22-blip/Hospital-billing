@@ -22,13 +22,13 @@ public class PharmacyShop {
 
     // Reference types
     private String shopName;
-    private ArrayList<Medicine> inventory;  // Array of Objects
+    private ArrayList<Medicine> inventory; // Array of Objects
     private ArrayList<Patient> patients;
     private ArrayList<Staff> staffs;
     private ArrayList<Order> orders; // Single Object
     // Primitives
     private int medicineCount = 0; // Counter
-    private int pharmacistCount = 0; // Counter
+    private int staffCount = 0; // Counter
     private double price;
     private String password;
     private String address;
@@ -49,7 +49,7 @@ public class PharmacyShop {
         return shopName;
     }
 
-    public Integer getMedicineCount() {
+    public int getMedicineCount() {
         return medicineCount;
     }
 
@@ -63,8 +63,11 @@ public class PharmacyShop {
     }
 
     // Required Search Method
-    public void createStaff(Pharmacist pharmacist) {
-        pharmacistCount++;
+    public void createStaff(Staff staff) {
+        staffs.add(staff);
+        if (staff instanceof Pharmacist) {
+            staffCount++;
+        }
     }
 
     public void createPatient(Patient patient) {
@@ -101,11 +104,20 @@ public class PharmacyShop {
     public void viewCustomers() {
     }
 
+    public void printStaffs() {
+        for (Staff s : staffs) {
+            System.out.println(s.getFullname() + " - " + s.getPosition());
+        }
+    }
+  public ArrayList<Staff> getStaffs() {
+    return staffs;
+}
+
     public void updateOrderStatus() {
     }
 
     public void viewOrder(Order order) {
-        
+
     }
 
     public void checkMenu() {
@@ -114,7 +126,8 @@ public class PharmacyShop {
         } else {
             System.out.println("Available Medicines:");
             for (Medicine medicine : inventory) {
-                System.out.println("- " + medicine.getName() + " (Price: " + medicine.getPrice() + ", Quantity: " + medicine.getQuantity() + ")");
+                System.out.println("- " + medicine.getName() + " (Price: " + medicine.getPrice() + ", Quantity: "
+                        + medicine.getQuantity() + ")");
             }
         }
     }

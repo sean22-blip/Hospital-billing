@@ -4,15 +4,10 @@ import controller.PharmacyShop;
 
 public class Pharmacist extends Staff {
 
-
     public Pharmacist(Staff p, double salary) {
         super(p.getFullname(), p.getStaffID(), p.getPhNumber(), p.getPassword(), p.getPosition(), p.getActive(),
-                p.getUsername());
+                p.getUsername(), p.getSalary(), p.getEmail());
         System.out.println("2) Calling from PharmacistStaff Constructor ");
-    }
-
-    public double getSalary(double salary) {
-        return salary;
     }
 
     @Override
