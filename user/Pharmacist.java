@@ -18,15 +18,22 @@ public class Pharmacist extends Staff {
         if (obj == null || getClass() != obj.getClass()) {
             return false;
         }
-        ManagerStaff that = (ManagerStaff) obj;
+        Pharmacist that = (Pharmacist) obj;
         return this.getStaffID().equals(that.getStaffID());
     }
+
     @Override
-    public boolean can(String action){
+    public boolean can(String action) {
         return action.equals(PharmacyShop.CREATE_ORDER)
-         || action.equals(PharmacyShop.VIEW_ORDERS)
-         || action.equals(PharmacyShop.VIEW_CUSTOMERS)
-         || action.equals(PharmacyShop.UPDATE_ORDER_STATUS); 
+                || action.equals(PharmacyShop.VIEW_ORDERS)
+                || action.equals(PharmacyShop.VIEW_CUSTOMERS)
+                || action.equals(PharmacyShop.UPDATE_ORDER_STATUS);
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + getStaffID() + ", Name: " + getFullname() + ", Position: " + getPosition() + ", Orders: "
+                + PharmacyShop.VIEW_ORDERS;
     }
 
 }
