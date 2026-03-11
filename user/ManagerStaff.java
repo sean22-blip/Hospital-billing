@@ -4,7 +4,7 @@ import controller.PharmacyShop;
 
 public class ManagerStaff extends Staff {
 
-    public ManagerStaff(Staff m, double salary) {
+    public ManagerStaff(Staff m, double commission) {
         super(m.getFullname(), m.getStaffID(), m.getPhNumber(), m.getPassword(), m.getPosition(), m.getActive(),
                 m.getUsername(), m.getSalary(), m.getEmail());
         System.out.println("Calling from ManagerStaff constructor!");

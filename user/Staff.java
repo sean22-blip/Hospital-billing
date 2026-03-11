@@ -1,6 +1,6 @@
 package user;
 
-public class Staff implements IStaff {
+public abstract class Staff implements IStaff {
     private String fullName;
     private String staffID;
     private String phNumber;

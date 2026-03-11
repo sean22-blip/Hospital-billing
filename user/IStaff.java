@@ -6,6 +6,6 @@ String getPosition();
 String checkPass(String input);
 boolean isActive();
 String getFullname();
-//iStfaff implements ManagerStaff,Pharmacist
+
 boolean can(String action);
 }

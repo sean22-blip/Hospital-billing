@@ -7,12 +7,12 @@ import user.Staff;
 public class Main {
     public static void main(String[] args) {
         PharmacyShop pShop = new PharmacyShop("Kaisen", "67676", "st 60m borey-peng-hout psar-kandal battambang");
-        Staff s1 = new Staff("Sokha", "S001", "012345678", "sokha123", "Manager", true, "Admin", 500.0,
+        Staff s1 = new Pharmacist("Sokha", "S001", "012345678", "sokha123", "Manager", true, "Admin", 500.0,
                 "fdaff@gmailc.om");
-        Staff s2 = new Staff("Sophea", "S002", "0987654321", "sophea123", "Pharmacist", true, "sophea", 300.0,
+        Staff s2 = new Pharmacist("Sophea", "S002", "0987654321", "sophea123", "Pharmacist", true, "sophea/Pharmacist", 300.0,
                 "faek1212@gmail.com");
         pShop.createStaff(new ManagerStaff(s1, 10));
-        pShop.createStaff(new Pharmacist(s2, 0));
+        pShop.createStaff(s2);
         for (Staff p : pShop.getStaffs()) {
             System.out.println(p.getUsername() + " can CREATE_ORDER? " + p.can(PharmacyShop.CREATE_ORDER));
             System.out.println(p.getUsername() + " can CREATE_MENU_ITEM? " + p.can(PharmacyShop.CREATE_MENU_ITEM));

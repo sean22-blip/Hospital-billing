@@ -4,10 +4,9 @@ import controller.PharmacyShop;
 
 public class Pharmacist extends Staff {
 
-    public Pharmacist(Staff p, double salary) {
-        super(p.getFullname(), p.getStaffID(), p.getPhNumber(), p.getPassword(), p.getPosition(), p.getActive(),
-                p.getUsername(), p.getSalary(), p.getEmail());
-        System.out.println("2) Calling from PharmacistStaff Constructor ");
+    public Pharmacist(String fullName, String staffID, String phNumber, String password,
+            String position, boolean active, String username, double salary, String email) {
+        super(fullName, staffID, phNumber, password, position, active, username, salary, email);
     }
 
     @Override
@@ -28,12 +27,6 @@ public class Pharmacist extends Staff {
                 || action.equals(PharmacyShop.VIEW_ORDERS)
                 || action.equals(PharmacyShop.VIEW_CUSTOMERS)
                 || action.equals(PharmacyShop.UPDATE_ORDER_STATUS);
-    }
 
-    @Override
-    public String toString() {
-        return "ID: " + getStaffID() + ", Name: " + getFullname() + ", Position: " + getPosition() + ", Orders: "
-                + PharmacyShop.VIEW_ORDERS;
-    }
-
+}
 }
