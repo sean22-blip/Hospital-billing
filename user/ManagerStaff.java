@@ -28,7 +28,7 @@ public class ManagerStaff extends Staff {
     }
 
     @Override
-public String toString() {
+   public String toString() {
     return "ID: " + getStaffID() + ", Name: " + getFullname() + ", Position: " + getPosition();
 }
 }

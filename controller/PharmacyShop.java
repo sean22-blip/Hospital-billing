@@ -88,10 +88,10 @@ public class PharmacyShop {
         }
     }
 
-    public void createOrder(Patient patient, Staff staff) {
+    public void createOrder(Patient patient) {
         // Implementation for creating an order]
 
-        System.out.println("Order created for patient: " + patient.getName() + " by staff: " + staff.getFullname());
+        System.out.println("Order created for patient: " + patient.getName());
         checkMenu();
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter medicine for" + patient.getName() + ":");
@@ -114,6 +114,7 @@ public class PharmacyShop {
 }
 
     public void updateOrderStatus() {
+
     }
 
     public void viewOrder(Order order) {

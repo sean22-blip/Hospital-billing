@@ -1,5 +1,7 @@
 package user;
 
+import java.util.Scanner;
+
 public abstract class Staff implements IStaff {
     private String fullName;
     private String staffID;
@@ -10,6 +12,8 @@ public abstract class Staff implements IStaff {
     private boolean active;
     private String username;
     private double salary;
+    
+    Scanner scanner = new Scanner(System.in);
 
     @Override
     public boolean can(String action) {
@@ -38,11 +42,11 @@ public abstract class Staff implements IStaff {
     public String getPhNumber() {
         return phNumber;
     }
-    public String getEmail() {
+    protected String getEmail() {
         return email;
     }
-    public String getPassword() {
-        return password;
+    protected String getPassword() {
+       return password;
     }
 
     public String getPosition() {
@@ -60,36 +64,36 @@ public abstract class Staff implements IStaff {
     public String getUsername() {
         return username;
     }
-    public double getSalary() {
+    protected double getSalary() {
        return salary;
     }
 
     // Setters
-    public void setStaffID(String staffID) {
+    protected void setStaffID(String staffID) {
         this.staffID = staffID;
     }
 
-    public void setPhNumber(String phNumber) {
+    protected void setPhNumber(String phNumber) {
         this.phNumber = phNumber;
     }
-    public void setEmail(String email) {
+    protected void setEmail(String email) {
         this.email = email;
     }
 
-    public String setPassword(String password) {
+    protected String setPassword(String password) {
         this.password = password;
         return password;
     }
 
-    public void setPosition(String position) {
+    protected void setPosition(String position) {
         this.position = position;
     }
 
-    public void setActive(Boolean active) {
+    protected void setActive(Boolean active) {
         this.active = active;
     }
 
-    public void setFullname(String fullName) {
+    protected void setFullname(String fullName) {
         this.fullName = fullName;
     }
 
@@ -98,7 +102,8 @@ public abstract class Staff implements IStaff {
     }
 
     public String checkPass(String input) {
-        String oldPass = getPassword();
+        System.out.print("Enter old password: ");
+        String oldPass = scanner.nextLine();
         if (oldPass.equals(input)) {
             System.out.println("Password is correct");
             return "Password is correct";

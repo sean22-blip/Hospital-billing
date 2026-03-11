@@ -28,5 +28,9 @@ public class Pharmacist extends Staff {
                 || action.equals(PharmacyShop.VIEW_CUSTOMERS)
                 || action.equals(PharmacyShop.UPDATE_ORDER_STATUS);
 
-}
+    }
+
+    public String toString() {
+        return "ID: " + getStaffID() + ", Name: " + getFullname() + ", Position: " + getPosition();
+    }
 }
