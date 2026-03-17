@@ -12,16 +12,15 @@ public abstract class Staff implements IStaff {
     private boolean active;
     private String username;
     private double salary;
-    
+    private int staffCount = 0;
+
     Scanner scanner = new Scanner(System.in);
 
     @Override
-    public boolean can(String action) {
-        return false;
-    }
+    public abstract boolean can(String action);
 
     public Staff(String fullName, String staffID, String phNumber, String password,
-            String position, boolean active, String username, double salary, String email) {
+                 String position, boolean active, String username, double salary, String email) {
         setStaffID(staffID);
         setFullname(fullName);
         setPhNumber(phNumber);
@@ -32,6 +31,7 @@ public abstract class Staff implements IStaff {
         setActive(active);
         this.active = active;
         System.out.println(("1) Calling from Staff Constructor "));
+        staffCount++;
     }
 
     // Getters
@@ -42,11 +42,13 @@ public abstract class Staff implements IStaff {
     public String getPhNumber() {
         return phNumber;
     }
+
     protected String getEmail() {
         return email;
     }
+
     protected String getPassword() {
-       return password;
+        return password;
     }
 
     public String getPosition() {
@@ -64,8 +66,9 @@ public abstract class Staff implements IStaff {
     public String getUsername() {
         return username;
     }
+
     protected double getSalary() {
-       return salary;
+        return salary;
     }
 
     // Setters
@@ -76,6 +79,7 @@ public abstract class Staff implements IStaff {
     protected void setPhNumber(String phNumber) {
         this.phNumber = phNumber;
     }
+
     protected void setEmail(String email) {
         this.email = email;
     }
@@ -115,7 +119,7 @@ public abstract class Staff implements IStaff {
 
     public boolean isActive() {
         getActive();
-        if (active == true) {
+        if (active) {
             System.out.println("Staff is active");
             return true;
         } else {
@@ -123,7 +127,8 @@ public abstract class Staff implements IStaff {
             return false;
         }
     }
-     @Override
+
+    @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;

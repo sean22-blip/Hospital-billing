@@ -2,9 +2,11 @@ package controller;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
 import other.Medicine;
 import other.Order;
 import other.Patient;
+import user.ManagerStaff;
 import user.Pharmacist;
 import user.Staff;
 
@@ -18,6 +20,7 @@ public class PharmacyShop {
     public static final String VIEW_CUSTOMERS = "VIEW_CUSTOMERS";
     public static final String VIEW_ORDERS = "VIEW_ORDERS";
     public static final String UPDATE_ORDER_STATUS = "UPDATE_ORDER_STATUS";
+
     // NO private, NO getters/setters
 
     // Reference types
@@ -63,11 +66,8 @@ public class PharmacyShop {
     }
 
     // Required Search Method
-    public void createStaff(Staff staff) {
-        staffs.add(staff);
-        if (staff instanceof Pharmacist) {
-            staffCount++;
-        }
+    public void createStaff(String fullName, String staffID, String phNumber, String password, String position, boolean active, String username, double salary, String email, double commission) {
+        staffCount++;
     }
 
     public void createPatient(Patient patient) {
@@ -109,9 +109,10 @@ public class PharmacyShop {
             System.out.println(s.getFullname() + " - " + s.getPosition());
         }
     }
-  public ArrayList<Staff> getStaffs() {
-    return staffs;
-}
+
+    public ArrayList<Staff> getStaffs() {
+        return staffs;
+    }
 
     public void updateOrderStatus() {
 
@@ -130,6 +131,44 @@ public class PharmacyShop {
                 System.out.println("- " + medicine.getName() + " (Price: " + medicine.getPrice() + ", Quantity: "
                         + medicine.getQuantity() + ")");
             }
+        }
+    }
+
+  public void setPeople(){
+      Patient p1 = new Patient("KabekSloy", "Autisitc", 67, false);
+      Patient p2 = new Patient("Iseann", "Autisitc", 67, true);
+      Staff staff = new Pharmacist(
+              "Sokha",
+              "P001",
+              "012345678",
+              "sokha123",
+              "Pharmacist",
+              true,
+              "soksok",
+              500.0,
+              "sokha@gmail.com");
+
+      Staff manager = new ManagerStaff(
+              "Dara",
+              "M001",
+              "098765432",
+              "dara123",
+              "Manager",
+              true,
+              "Admin",
+              500.0,
+              "dara@gmail.com"
+              , 100
+      );
+  }
+
+    public void permissionTest() {
+        System.out.println(staffs.size());
+        for (Staff p : staffs) {
+            System.out.println(p.getUsername() + " can CREATE_ORDER? " + p.can(PharmacyShop.CREATE_ORDER));
+            System.out.println(p.getUsername() + " can CREATE_MENU_ITEM? " + p.can(PharmacyShop.CREATE_MENU_ITEM));
+            System.out.println(p.getUsername() + " can VIEW_ORDERS? " + p.can(PharmacyShop.VIEW_ORDERS));
+            System.out.println(p.getUsername() + " can VIEW_CUSTOMERS? " + p.can(PharmacyShop.VIEW_CUSTOMERS));
         }
     }
 

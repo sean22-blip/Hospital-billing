@@ -3,11 +3,11 @@ package user;
 import controller.PharmacyShop;
 
 public class ManagerStaff extends Staff {
-
-    public ManagerStaff(Staff m, double commission) {
-        super(m.getFullname(), m.getStaffID(), m.getPhNumber(), m.getPassword(), m.getPosition(), m.getActive(),
-                m.getUsername(), m.getSalary(), m.getEmail());
+private double commission;
+    public ManagerStaff(String fullName, String staffID, String phNumber, String password, String position, boolean active, String username, double salary, String email, double commission) {
+        super(fullName, staffID,phNumber, password, position, active, username, salary, email);
         System.out.println("Calling from ManagerStaff constructor!");
+        
     }
 
     @Override

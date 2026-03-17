@@ -8,9 +8,8 @@ public class Medicine {
     private int quantity;
     private double price;
 
-    public Medicine(String name, String batchId, int quantity, double price) {
+    public Medicine(String name, int quantity, double price) {
         this.name = name;
-        this.batchId = batchId;
         this.quantity = quantity;
         this.price = price;
     }

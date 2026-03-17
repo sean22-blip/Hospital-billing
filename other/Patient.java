@@ -17,6 +17,7 @@ public class Patient {
         this.symptom = symptom;
         this.age = age;
         this.hasInsurance = hasInsurance;
+        System.out.println("Calling from patient constructor!");
     }
     // Primitive types
 
