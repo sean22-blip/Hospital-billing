@@ -2,8 +2,10 @@ package user;
 
 import java.util.Scanner;
 
+import controller.PharmacyShop;
+
 public abstract class Staff implements IStaff {
-    private String fullName;
+    protected String fullName;
     private String staffID;
     private String phNumber;
     private String email;
@@ -12,12 +14,13 @@ public abstract class Staff implements IStaff {
     private boolean active;
     private String username;
     private double salary;
-    private int staffCount = 0;
+    protected int staffCount = 0;
 
     Scanner scanner = new Scanner(System.in);
 
     @Override
     public abstract boolean can(String action);
+    
 
     public Staff(String fullName, String staffID, String phNumber, String password,
                  String position, boolean active, String username, double salary, String email) {
@@ -72,8 +75,12 @@ public abstract class Staff implements IStaff {
     }
 
     // Setters
+    
     protected void setStaffID(String staffID) {
-        this.staffID = staffID;
+      String tmp =  getPosition();
+    //   it(tmp.equals())
+
+    
     }
 
     protected void setPhNumber(String phNumber) {
