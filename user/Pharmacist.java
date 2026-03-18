@@ -1,8 +1,7 @@
 package user;
 
-import controller.IPermission;
 import controller.PharmacyShop;
-public class Pharmacist extends Staff implements IPermission {
+public class Pharmacist extends Staff {
    
 
     Pharmacist(String fullName, String staffID, String phNumber, String password, String position, boolean active, String username, double salary, String email) {
@@ -20,7 +19,7 @@ public class Pharmacist extends Staff implements IPermission {
         Pharmacist that = (Pharmacist) obj;
         return this.getStaffID().equals(that.getStaffID());
     }
-
+@Override
     public boolean can(String action) {
         return action.equals(PharmacyShop.CREATE_ORDER) || action.equals(PharmacyShop.VIEW_ORDERS) || action.equals(PharmacyShop.VIEW_CUSTOMERS) || action.equals(PharmacyShop.UPDATE_ORDER_STATUS);
 

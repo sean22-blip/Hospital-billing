@@ -3,15 +3,16 @@ package controller;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Scanner;
-
 import other.Medicine;
 import other.Order;
 import other.Patient;
 import user.ManagerStaff;
-import user.Pharmacist;
 import user.Staff;
-import controller.ActiveStaffFilter;
-import controller.StaffFilter;
+
+@FunctionalInterface
+interface StaffFilter {
+    abstract boolean test(Staff s);
+}
 
 public class PharmacyShop {
 
@@ -24,14 +25,11 @@ public class PharmacyShop {
     public static final String VIEW_ORDERS = "VIEW_ORDERS";
     public static final String UPDATE_ORDER_STATUS = "UPDATE_ORDER_STATUS";
 
-    // NO private, NO getters/setters
-
-    // Reference types
     private String shopName;
-    private ArrayList<Medicine> inventory; // Array of Objects
+    private ArrayList<Medicine> inventory;
     private ArrayList<Patient> patients;
     private ArrayList<Staff> staffs;
-    private ArrayList<Order> orders; // Single Object
+    private ArrayList<Order> orders;
     // Primitives
     private int medicineCount = 0; // Counter
     private int staffCount = 0; // Counter
@@ -50,6 +48,10 @@ public class PharmacyShop {
         this.medicineCount = 0;
 
     }
+
+    public void seedDefaulfAdmin() {
+
+    };
 
     public String getShopName() {
         return shopName;
@@ -70,59 +72,104 @@ public class PharmacyShop {
 
     // Required Search Method
     public void createStaff(Staff staff) {
-        // Staff s = new Pharmacist();
+        if (staff == null) {
+            System.out.println("Staff cannot be null");
+            return;
+        }
+        // staffs.add(staff);
+        // staffCount++;
+        // System.out.println("Staff " + staff.getFullname() + " added successfully");
+        // }
+
     }
 
     public void createPatient(Patient patient) {
+        if (patient == null) {
+            System.out.println("Patient cannot be null");
+            return;
+        }
         patients.add(patient);
+        System.out.println("Patient " + patient.getName() + " added successfully");
     }
 
     public void createMenuItem(Medicine medicine) {
+        if (medicine == null) {
+            System.out.println("Medicine cannot be null");
+            return;
+        }
         inventory.add(medicine);
         medicineCount++;
+        System.out.println("Medicine " + medicine.getName() + " added successfully");
     }
 
     public void setMenuItemAvailability(Medicine medicine, boolean isAvailable) {
+        if (medicine == null) {
+            System.out.println("Medicine cannot be null");
+            return;
+        }
         for (Medicine item : inventory) {
             if (item.getName().equals(medicine.getName())) {
                 System.out.println("Medicine " + medicine.getName() + " availability set to " + isAvailable);
                 return;
             }
         }
+        System.out.println("Medicine " + medicine.getName() + " not found in inventory");
     }
 
     public void createOrder(Patient patient) {
-        // Implementation for creating an order]
-
+        if (patient == null) {
+            System.out.println("Patient cannot be null");
+            return;
+        }
+        if (inventory.isEmpty()) {
+            System.out.println("No medicines available");
+            return;
+        }
         System.out.println("Order created for patient: " + patient.getName());
         checkMenu();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter medicine for" + patient.getName() + ":");
+        System.out.println("Enter medicine for " + patient.getName() + ":");
         String requireMedicine = scanner.nextLine();
         System.out.println("Enter quantity for: " + requireMedicine);
         int quantity = scanner.nextInt();
+        if (quantity <= 0) {
+            System.out.println("Quantity must be greater than 0");
+            return;
+        }
         System.out.println("Creating order...");
     }
 
     public void viewCustomers() {
-    }
-
-    public void printStaffs() {
-        for (Staff s : staffs) {
-            System.out.println(s.getFullname() + " - " + s.getPosition());
+        if (patients.isEmpty()) {
+            System.out.println("No patients found");
+            return;
+        }
+        System.out.println("=== Patients ===");
+        for (Patient p : patients) {
+            System.out.println("- " + p.getName() + " | Symptom: " + p.getSymptom() + " | Age: " + p.getAge());
         }
     }
 
-    public ArrayList<Staff> getStaffs() {
-        return staffs;
-    }
-
     public void updateOrderStatus() {
-
+        if (orders.isEmpty()) {
+            System.out.println("No orders found");
+            return;
+        }
+        System.out.println("=== Orders ===");
+        for (Order o : orders) {
+            System.out.println("Order ID: " + o.getOrderId() + " | Total: " + o.getTotal() + " | Paid: " + o.isPaid());
+        }
     }
 
     public void viewOrder(Order order) {
-
+        if (order == null) {
+            System.out.println("Order cannot be null");
+            return;
+        }
+        System.out.println("=== Order Details ===");
+        System.out.println("Order ID: " + order.getOrderId());
+        System.out.println("Total: " + order.getTotal());
+        System.out.println("Paid: " + order.isPaid());
     }
 
     public void checkMenu() {
@@ -140,16 +187,16 @@ public class PharmacyShop {
     public void setPeople() {
         Patient p1 = new Patient("KabekSloy", "Autisitc", 67, false);
         Patient p2 = new Patient("Iseann", "Autisitc", 67, true);
-        Staff staff = new Pharmacist(
-                "Sokha",
-                "P001",
-                "012345678",
-                "sokha123",
-                "Pharmacist",
-                true,
-                "soksok",
-                500.0,
-                "sokha@gmail.com");
+        // Staff staff = new Pharmacist(
+        // "Sokha",
+        // "P001",
+        // "012345678",
+        // "sokha123",
+        // "Pharmacist",
+        // true,
+        // "soksok",
+        // 500.0,
+        // "sokha@gmail.com");
 
         Staff manager = new ManagerStaff(
                 "Dara",
@@ -164,41 +211,54 @@ public class PharmacyShop {
     }
 
     public void permissionTest() {
-        //anonymous class but lamda expression 
-        Comparator<Medicine> comparator =  new Comparator<Medicine>() {
-        // (a,b) ->  Double.compare(a.getPrice(), b.getPrice());
-            public int compare(Medicine a, Medicine b){
+        // anonymous class but lamda expression
+        Comparator<Medicine> comparator = new Comparator<Medicine>() {
+            // (a,b) -> Double.compare(a.getPrice(), b.getPrice());
+            @Override
+            public int compare(Medicine a, Medicine b) {
                 return Double.compare(a.getPrice(), b.getPrice());
             }
         };
-        //  anonymous class 
-            //the purpose is to create class without having to create a seperate file like 
-            //.java file
+        // anonymous class
+        // the purpose is to create class without having to create a seperate file like
+        // .java file
         for (Staff p : staffs) {
-        System.out.println(p.getUsername() + " can CREATE_ORDER? " +
-        p.can(PharmacyShop.CREATE_ORDER));
-        System.out.println(p.getUsername() + " can CREATE_MENU_ITEM? " +
-        p.can(PharmacyShop.CREATE_MENU_ITEM));
-        System.out.println(p.getUsername() + " can VIEW_ORDERS? " +
-        p.can(PharmacyShop.VIEW_ORDERS));
-        System.out.println(p.getUsername() + " can VIEW_CUSTOMERS? " +
-        p.can(PharmacyShop.VIEW_CUSTOMERS));
-        }//Abstraction 
+            System.out.println(p.getUsername() + " can CREATE_ORDER? "
+                    + p.can(PharmacyShop.CREATE_ORDER));
+            System.out.println(p.getUsername() + " can CREATE_MENU_ITEM? "
+                    + p.can(PharmacyShop.CREATE_MENU_ITEM));
+            System.out.println(p.getUsername() + " can VIEW_ORDERS? "
+                    + p.can(PharmacyShop.VIEW_ORDERS));
+            System.out.println(p.getUsername() + " can VIEW_CUSTOMERS? "
+                    + p.can(PharmacyShop.VIEW_CUSTOMERS));
+        } // Abstraction
+
         StaffFilter filter = new StaffFilter() {
-            @Override
             public boolean test(Staff s) {
                 return s.isActive();
             }
         };
-        // StaffFilter filter = (Staff s)->s.isActive();
+
+        // StaffFilter filter = s -> s.isActive();
         for (Staff s : staffs) {
             if (filter.test(s)) {
                 System.out.println(s.getFullname());
             }
         }
+        // StaffFilter managerFilter = s -> s.getPosition().equals("manager");
+        // StaffFilter phStaffFilter = s -> s.getPosition().equals("pharmacist");
+        // active staff
         staffs.stream()
-            .filter(s->s.isActive())
-            .forEach(s-> System.out.println(s.getFullname()));
+                .filter(s -> s.isActive())
+                .forEach(s -> System.out.println(s.getFullname()));
 
-    }//lamda expresssion
+        // // managers
+        // staffs.stream()
+        // .filter(s -> s.getPosition().equals("Pharmacist"))
+        // .forEach(s -> System.out.println(s.getFullname()));
+        // // pharmacists
+        // staffs.stream()
+        // .filter(s -> s.getPosition().equals("Manager"))
+        // .forEach(s -> System.out.println(s.getFullname()));
+    }
 }
