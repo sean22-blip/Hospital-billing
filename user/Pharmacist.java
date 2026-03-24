@@ -5,7 +5,7 @@ import controller.PharmacyShop;
 public class Pharmacist extends Staff implements IPermission {
    
 
-    Pharmacist(String fullName, String staffID, String phNumber, String password, String position, boolean active, String username, double salary, String email) {
+    public Pharmacist(String fullName, String staffID, String phNumber, String password, String position, boolean active, String username, double salary, String email) {
         super(fullName, staffID, phNumber, password,position, active, username, salary, email);
     }
 

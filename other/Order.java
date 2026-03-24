@@ -1,73 +1,66 @@
 package other;
 
-import user.Pharmacist;
-
 public class Order {
-    // Primitives
     private int itemCount;
     private int orderId;
     private boolean isPaid;
     private double total;
     private int quantity;
-
     private String medName;
-    private Double snapshotPrices; // Primitive array stores price at moment of buy
+    private Double snapshotPrices;
+    private Patient patient;
+    private String pharmacistName;
 
-    public Order(Patient p, Medicine m) {
-        this.orderId = orderId;
-        this.quantity = quantity;
-
+    public Order(Patient p, Medicine m, int quantity, String pharmacistName) {
+        this.patient        = p;
+        this.medName        = m.getName();
+        this.quantity       = quantity;
+        this.pharmacistName = pharmacistName;
+        this.snapshotPrices = m.getPrice();
+        this.orderId        = (int)(Math.random() * 9000) + 1000; // random 4-digit ID
 
         if (m.isAvailable() && m.getStock() >= quantity) {
-            this.total = m.getPrice() * quantity;
+            this.total  = m.getPrice() * quantity;
+            this.isPaid = false;
+        } else {
+            System.out.println("Not enough stock for: " + m.getName());
+            this.total = 0.00;
         }
     }
 
-    // public Patient getPatient() {
-    //     return patient;
-    // }
+    // ── Getters ───────────────────────────────────────────────
+    public Integer getOrderId()        { return orderId; }
+    public Double  getTotal()          { return total; }
+    public Boolean isPaid()            { return isPaid; }
+    public Integer getItemCount()      { return itemCount; }
+    public Double  getSnapshotPrices() { return snapshotPrices; }
+    public Patient getPatient()        { return patient; }
+    public String  getMedName()        { return medName; }
+    public int     getQuantity()       { return quantity; }
 
-    // public Pharmacist getPharmacist() {
-    //     return pharmacist;
-
-    // }
-
-    // public String getItemNames() {
-    //     return itemNames;
-    // }
-
-    public Double getSnapshotPrices() {
-        return snapshotPrices;
+    // ── Receipt ───────────────────────────────────────────────
+    public String receipt() {
+        return  "==============================\n"
+              + "           RECEIPT            \n"
+              + "==============================\n"
+              + "Order ID   : #" + orderId        + "\n"
+              + "Patient    : " + patient.getName() + "\n"
+              + "Medicine   : " + medName           + "\n"
+              + "Quantity   : " + quantity           + "\n"
+              + "Unit Price : $" + snapshotPrices    + "\n"
+              + "Total      : $" + total             + "\n"
+              + "Sold By    : " + pharmacistName     + "\n"
+              + "Paid       : " + (isPaid ? "Yes" : "No") + "\n"
+              + "==============================";
     }
 
-    public Integer getItemCount() {
-        return itemCount;
+    @Override
+    public String toString() {
+        return "Order #" + orderId
+             + " | Patient: "  + patient.getName()
+             + " | Medicine: " + medName
+             + " | Qty: "      + quantity
+             + " | Total: $"   + total
+             + " | Paid: "     + (isPaid ? "Yes" : "No");
     }
-
-    public Integer getOrderId() {
-        return orderId;
-    }
-
-    public Boolean isPaid() {
-        return isPaid;
-    }
-
-    // public void calculateTotal(String medicineName, int quantity) {
-    //     if (medicineName.equals(medicine.getName()) && medicine.isAvailable() && medicine.getStock() >= quantity) {
-    //         total = medicine.getPrice() * quantity;
-    //     } else {
-    //         total = 0.00;
-    //     }
-    // }
-
-    public Double getTotal() {
-        return total;
-    }
-
-    // public String receipt() {
-    //     return "Receipt #" + orderId
-    //      + " | Sold By: " + pharmacist.getFullname() 
-    //      + " |Patient: " + patient.toString() 
-    //      + " | Total: $" + total;
-    // }
 }

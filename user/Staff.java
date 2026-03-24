@@ -2,8 +2,6 @@ package user;
 
 import java.util.Scanner;
 
-import controller.PharmacyShop;
-
 public abstract class Staff implements IStaff {
     protected String fullName;
     private String staffID;
@@ -33,7 +31,6 @@ public abstract class Staff implements IStaff {
         setEmail(email);
         setActive(active);
         this.active = active;
-        System.out.println(("1) Calling from Staff Constructor "));
         staffCount++;
     }
 
@@ -50,7 +47,7 @@ public abstract class Staff implements IStaff {
         return email;
     }
 
-    protected String getPassword() {
+    public String getPassword() {
         return password;
     }
 
@@ -63,7 +60,7 @@ public abstract class Staff implements IStaff {
     }
 
     public String getFullname() {
-        return fullName;
+        return String.valueOf(fullName);
     }
 
     public String getUsername() {
