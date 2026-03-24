@@ -1,9 +1,8 @@
 package user;
 
-import controller.IPermission;
 import controller.PharmacyShop;
 
-public class ManagerStaff extends Staff implements IPermission{
+public class ManagerStaff extends Staff{
 private double commission;
     public ManagerStaff(String fullName, String staffID, String phNumber, String password, String position, boolean active, String username, double salary, String email, double commission) {
         super(fullName, staffID,phNumber, password, position, active, username, salary, email);

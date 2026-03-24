@@ -2,6 +2,10 @@
     "java.debug.settings.onBuildFailureProceed": true,
     "java.project.referencedLibraries": [
         "lib/**/*.jar",
+<<<<<<< HEAD
         "c:\\Users\\USER\\OneDrive - Cambodia Academy of Digital Technology\\java\\mysql-connector-j-9.6.0\\mysql-connector-j-9.6.0.jar"
+=======
+        "c:\\Users\\CADT\\Desktop\\mysql-connector-j-9.6.0.jar"
+>>>>>>> 071dff3dcd195983dc5a2fc821f22035fc8c12d5
     ]
 }

@@ -6,8 +6,15 @@ import other.Medicine;
 import other.Order;
 import other.Patient;
 import user.ManagerStaff;
-import user.Pharmacist;
 import user.Staff;
+<<<<<<< HEAD
+=======
+
+@FunctionalInterface
+interface StaffFilter {
+    abstract boolean test(Staff s);
+}
+>>>>>>> 071dff3dcd195983dc5a2fc821f22035fc8c12d5
 
 public class PharmacyShop {
 
