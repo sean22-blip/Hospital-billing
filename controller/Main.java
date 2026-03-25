@@ -1,29 +1,68 @@
 package controller;
 
+import other.Medicine;
+import other.Order;
+import other.Patient;
+import user.ManagerStaff;
+import user.Pharmacist;
+import user.Staff;
+import user.OwnerStaff;
+
+import java.util.MissingFormatArgumentException;
+import java.util.Scanner;
+
 public class Main {
-    public static void main(String[] args) {
 
-        PharmacyShop pShop = new PharmacyShop("Kaisen", "67676", "st 60m borey-peng-hout psar-kandal battambang");
-        pShop.setPeople();
+    public static void main(String[] args) throws RuntimeException {
 
-        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        PharmacyShop pShop = new PharmacyShop("Kaisen", "676767", "st 60m borey-peng-hout psar-kandal battambang",
+                "IKAKAKA");
+        Scanner scanner = new Scanner(System.in);
 
         // ── Login gate ────────────────────────────────────────
         System.out.println("=== Welcome to " + pShop.getShopName() + " ===");
-        user.Staff loggedInStaff = null;
+        Staff loggedInStaff = null;
+        String username = "";
+        String password = "";
 
         while (loggedInStaff == null) {
-            System.out.print("Username: ");
-            String username = scanner.nextLine().trim();
-            System.out.print("Password: ");
-            String password = scanner.nextLine().trim();
+
+            do {
+                try {
+                    System.out.print("Username: ");
+                    username = scanner.nextLine().trim();
+
+                    if (username.isEmpty()) {
+                        throw new IllegalArgumentException("Username cannot be empty!");
+                    }
+                    if (username.matches(".*\\d.*")) {
+                        throw new IllegalArgumentException("Username cannot contain numbers!");
+                    }
+                    break; // valid input, exit the loop
+
+                } catch (Exception e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
+            } while (true);
+            do {
+                try {
+                    System.out.print("Password: ");
+                    password = scanner.nextLine().trim();
+                    if (password.isEmpty()) {
+                        throw new IllegalArgumentException("Password cannot be empty!");
+                    }
+                    break;
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Error: " + e.getMessage());
+                } finally {
+                    System.out.println("Finished!");
+                }
+
+            } while (true);
             loggedInStaff = pShop.login(username, password);
-            if (loggedInStaff == null) {
-                System.out.println("Invalid credentials. Try again.\n");
-            }
         }
         System.out.println("Welcome, " + loggedInStaff.getFullname()
-            + " (" + loggedInStaff.getPosition() + ")!\n");
+                + " (" + loggedInStaff.getPosition() + ")!\n");
 
         // ── Main menu loop ────────────────────────────────────
         boolean running = true;
@@ -34,9 +73,9 @@ public class Main {
             System.out.println("3). Create medicine (menu item)");
             System.out.println("4). Create patient");
             System.out.println("5). View staff list");
-            System.out.println("6). View orders");         // NEW
-            System.out.println("7). View customers");      // NEW
-            System.out.println("8). Get receipt");         // NEW
+            System.out.println("6). View orders"); // NEW
+            System.out.println("7). View Patients"); // NEW
+            System.out.println("8). Get receipt"); // NEW
             System.out.println("9). Exit");
             System.out.print("=> : ");
 
@@ -57,27 +96,47 @@ public class Main {
                     }
                     System.out.println("-- Create Staff --");
                     System.out.print("Role (1 = Pharmacist, 2 = Manager): ");
-                    int role;
-                    try { role = Integer.parseInt(scanner.nextLine().trim()); }
-                    catch (NumberFormatException e) { System.out.println("Invalid input."); break; }
+                    int role = 0;
 
-                    System.out.print("Full Name: ");    String fullName = scanner.nextLine().trim();
-                    System.out.print("Staff ID: ");     String staffID  = scanner.nextLine().trim();
-                    System.out.print("Phone: ");        String phone    = scanner.nextLine().trim();
-                    System.out.print("Password: ");     String sPass    = scanner.nextLine().trim();
-                    System.out.print("Username: ");     String sUser    = scanner.nextLine().trim();
+                    try {
+
+                        role = Integer.parseInt(scanner.nextLine().trim());
+                        if (role >= 3 || role <= 0) {
+                            System.out.println("Invalid Role!");
+                            break;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid input.");
+                        break;
+                    }
+
+                    System.out.print("Full Name: ");
+                    String fullName = scanner.nextLine().trim();
+                    System.out.print("Staff ID: ");
+                    String staffID = scanner.nextLine().trim();
+                    System.out.print("Phone: ");
+                    String phone = scanner.nextLine().trim();
+                    System.out.print("Password: ");
+                    String sPass = scanner.nextLine().trim();
+                    System.out.print("Username: ");
+                    String sUser = scanner.nextLine().trim();
                     System.out.print("Salary: ");
                     double salary;
-                    try { salary = Double.parseDouble(scanner.nextLine().trim()); }
-                    catch (NumberFormatException e) { System.out.println("Invalid salary."); break; }
-                    System.out.print("Email: ");        String email = scanner.nextLine().trim();
+                    try {
+                        salary = Double.parseDouble(scanner.nextLine().trim());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid salary.");
+                        break;
+                    }
+                    System.out.print("Email: ");
+                    String email = scanner.nextLine().trim();
 
-                    user.Staff newStaff;
+                    Staff newStaff;
                     if (role == 1) {
-                        newStaff = new user.Pharmacist(fullName, staffID, phone, sPass,
+                        newStaff = new Pharmacist(fullName, staffID, phone, sPass,
                                 "Pharmacist", true, sUser, salary, email);
                     } else if (role == 2) {
-                        newStaff = new user.ManagerStaff(fullName, staffID, phone, sPass,
+                        newStaff = new ManagerStaff(fullName, staffID, phone, sPass,
                                 "Manager", true, sUser, salary, email, 0);
                     } else {
                         System.out.println("Invalid role.");
@@ -87,21 +146,48 @@ public class Main {
                     break;
 
                 case 2: // Create Order
+                    if (!pShop.hasInventory()) {
+                        System.out.println("No medicines available in the inventory.");
+                        break;
+                    }
+
+                    pShop.checkMenu();
                     if (!loggedInStaff.can(PharmacyShop.CREATE_ORDER)) {
                         System.out.println("Access denied: you don't have permission to create orders.");
                         break;
                     }
                     System.out.println("-- Create Order --");
-                    System.out.print("Patient name: ");    String pName    = scanner.nextLine().trim();
-                    System.out.print("Symptom: ");         String pSymptom = scanner.nextLine().trim();
-                    System.out.print("Age: ");
-                    int pAge;
-                    try { pAge = Integer.parseInt(scanner.nextLine().trim()); }
-                    catch (NumberFormatException e) { System.out.println("Invalid age."); break; }
-                    System.out.print("Has insurance? (true/false): ");
-                    boolean pIns = Boolean.parseBoolean(scanner.nextLine().trim());
+                    int pAge = 0;
+                    String pName = "";
+                    String pSymptom = "";
+                    boolean pIns = false;
+                    boolean isRunning = true;
+                    do {
+                        try {
+                            System.out.print("Patient name: ");
+                            pName = scanner.nextLine().trim();
+                            if (pName.isEmpty()) {
+                                throw new IllegalArgumentException("Name can not be empty!");
+                            }
+                            System.out.print("Symptom: ");
+                            pSymptom = scanner.nextLine().trim();
+                            if (pSymptom.isEmpty()) {
+                                throw new IllegalArgumentException("Symptom can't be empty");
+                            }
+                            System.out.print("Age: ");
+                            pAge = Integer.parseInt(scanner.nextLine().trim());
+                            System.out.print("Has insurance? (true/false): ");
+                            pIns = Boolean.parseBoolean(scanner.nextLine().trim());
 
-                    other.Patient orderPatient = new other.Patient(pName, pSymptom, pAge, pIns);
+                        } catch (Exception e) {
+                            System.out.println("Error: " + e.getMessage());
+                        } finally {
+                            System.out.println("Finished!");
+                            isRunning = false;
+                        }
+                    } while (isRunning);
+
+                    Patient orderPatient = new Patient(pName, pSymptom, pAge, pIns);
                     pShop.createPatient(orderPatient); // also save the patient
                     pShop.createOrder(orderPatient, loggedInStaff);
                     break;
@@ -112,17 +198,53 @@ public class Main {
                         break;
                     }
                     System.out.println("-- Add Medicine --");
-                    System.out.print("Medicine name: ");   String medName = scanner.nextLine().trim();
-                    System.out.print("Quantity: ");
-                    int qty;
-                    try { qty = Integer.parseInt(scanner.nextLine().trim()); }
-                    catch (NumberFormatException e) { System.out.println("Invalid quantity."); break; }
+                    String medName = "";
+                    do {
+                        try {
+                            System.out.print("Medicine name: ");
+                            medName = scanner.nextLine().trim();
+                            if (medName.isEmpty()) {
+                                throw new IllegalArgumentException("Medicine name cannot be empty");
+                            }
+                            if (medName.matches(".*\\d.*")) {
+                                throw new IllegalArgumentException("medicine name cannot contain numbers!");
+                            }
+                            break;
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Error: " + e.getMessage());
+
+                        }
+                    } while (true);
+                   
+                    int qty=0;
+                    
+                do {
+                        System.out.print("Quantity: ");
+                        String input = scanner.nextLine().trim();
+                        if (input.isEmpty()) {
+                            System.out.println("Quantity cannot be empty!");
+
+                        }
+                        try {
+                            qty = Integer.parseInt(input);
+                            if(qty <= 0 || qty >= 1000){
+                                System.out.println("Invalid QUANTITY.");
+                                break;
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println();
+                        }
+                    } while (true);
                     System.out.print("Price: ");
                     double medPrice;
-                    try { medPrice = Double.parseDouble(scanner.nextLine().trim()); }
-                    catch (NumberFormatException e) { System.out.println("Invalid price."); break; }
+                    try {
+                        medPrice = Double.parseDouble(scanner.nextLine().trim());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid price.");
+                        break;
+                    }
 
-                    pShop.createMenuItem(new other.Medicine(medName, qty, medPrice));
+                    pShop.createMenuItem(new Medicine(medName, qty, medPrice));
                     System.out.println("Medicine \"" + medName + "\" added. Total: " + pShop.getMedicineCount());
                     break;
 
@@ -132,17 +254,68 @@ public class Main {
                         break;
                     }
                     System.out.println("-- Create Patient --");
-                    System.out.print("Name: ");     String cName    = scanner.nextLine().trim();
-                    System.out.print("Symptom: ");  String cSymptom = scanner.nextLine().trim();
-                    System.out.print("Age: ");
-                    int cAge;
-                    try { cAge = Integer.parseInt(scanner.nextLine().trim()); }
-                    catch (NumberFormatException e) { System.out.println("Invalid age."); break; }
+                    String name = "";
+                    do {
+                        try {
+                            System.out.print("Name: ");
+                            name = scanner.nextLine().trim();
+                            if (name.isEmpty()) {
+                                throw new IllegalArgumentException("Username cannot be empty!");
+                            }
+                            if (name.matches(".*\\d.*")) {
+                                throw new IllegalArgumentException("Username cannot contain numbers!");
+                            }
+                            break;
+
+                        } catch (Exception e) {
+                            System.out.println("Error: " + e.getMessage());
+
+                        }
+                    } while (true);
+                    String symptom = "";
+                    do {
+                        try {
+
+                            System.out.print("Symptom: ");
+                            symptom = scanner.nextLine().trim();
+                            if (symptom.isEmpty()) {
+                                throw new IllegalArgumentException("symptom cannot be empty!");
+                            }
+                            if (symptom.matches(".*\\d.*")) {
+                                throw new IllegalArgumentException("symptom cannot contain numbers!");
+                            }
+                            break;
+
+                        } catch (Exception e) {
+                            System.out.println("Error: " + e.getMessage());
+
+                        }
+                    } while (true);
+
+                    int cAge = 0;
+                    do {
+                        System.out.print("Age: ");
+                        String input = scanner.nextLine().trim();
+                        if (input.isEmpty()) {
+                            System.out.println("Age cannot be empty!");
+
+                        }
+                        try {
+                            cAge = Integer.parseInt(input);
+                            if(cAge <= 0 || cAge >= 100){
+                                System.out.println("Invalid age.");
+                                continue;
+                            }
+                            break;
+                        } catch (NumberFormatException e) {
+                            System.out.println("Invalid age.");
+                        }
+                    } while (true);
                     System.out.print("Has insurance? (true/false): ");
                     boolean cIns = Boolean.parseBoolean(scanner.nextLine().trim());
 
-                    pShop.createPatient(new other.Patient(cName, cSymptom, cAge, cIns));
-                    System.out.println("Patient \"" + cName + "\" created successfully.");
+                    pShop.createPatient(new Patient(name, symptom, cAge, cIns));
+                    System.out.println("Patient \"" + name + "\" created successfully.");
                     break;
 
                 case 5: // View Staff List
@@ -171,12 +344,23 @@ public class Main {
                         System.out.println("Access denied: you don't have permission to view receipts.");
                         break;
                     }
+                    if (!pShop.hasOrders()) {
+                        System.out.println("No orders available.");
+                        break;
+                    }
+
                     pShop.viewOrders(); // show list first so user knows which ID to pick
+
                     System.out.print("Enter Order ID to print receipt: ");
                     int receiptId;
-                    try { receiptId = Integer.parseInt(scanner.nextLine().trim()); }
-                    catch (NumberFormatException e) { System.out.println("Invalid ID."); break; }
+                    try {
+                        receiptId = Integer.parseInt(scanner.nextLine().trim());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid ID.");
+                        break;
+                    }
                     pShop.getReceipt(receiptId);
+
                     break;
 
                 case 9: // Exit
