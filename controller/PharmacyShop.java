@@ -6,15 +6,15 @@ import other.Medicine;
 import other.Order;
 import other.Patient;
 import user.ManagerStaff;
+import user.OwnerStaff;
+import user.Pharmacist;
 import user.Staff;
-<<<<<<< HEAD
-=======
+
 
 @FunctionalInterface
 interface StaffFilter {
     abstract boolean test(Staff s);
 }
->>>>>>> 071dff3dcd195983dc5a2fc821f22035fc8c12d5
 
 public class PharmacyShop {
 
@@ -36,15 +36,18 @@ public class PharmacyShop {
     private int staffCount = 0;
     private String password;
     private String address;
+    private String username;
 
-    public PharmacyShop(String shopName, String password, String address) {
+    public PharmacyShop(String shopName, String password, String address, String username) {
         this.shopName = shopName;
         this.password = password;
         this.address = address;
+        this.username = username;
         this.inventory = new ArrayList<>();
         this.patients = new ArrayList<>();
         this.staffs = new ArrayList<>();
         this.orders = new ArrayList<>();
+        setPeople();
     }
 
     // ── Getters 
@@ -63,6 +66,12 @@ public class PharmacyShop {
 
     // ── Login 
     public Staff login(String username, String password) {
+        if (this.username.equals(username) && this.password.equals(password)) {
+            return new OwnerStaff(
+                    "Owner", "OWNER001", "000000000", password,
+                    "Owner", true, username, 0.0, "owner@kaisen.com"
+            );
+        }
         for (Staff s : staffs) {
             if (s.getUsername().equals(username) && s.getPassword().equals(password)) {
                 return s;
@@ -71,8 +80,9 @@ public class PharmacyShop {
         return null;
     }
 
-    // ── Staff ─
+    // ── Staff 
     public void createStaff(Staff staff) {
+
         staffs.add(staff);
         staffCount++;
         System.out.println("Staff \"" + staff.getFullname() + "\" added successfully.");
@@ -113,9 +123,9 @@ public class PharmacyShop {
         medicineCount++;
     }
 
-    public void checkMenu() {
+    public String checkMenu() {
         if (inventory.isEmpty()) {
-            System.out.println("No medicines available in the inventory.");
+            return "No medicines available in the inventory.";
         } else {
             System.out.println("Available Medicines:");
             for (Medicine m : inventory) {
@@ -124,6 +134,7 @@ public class PharmacyShop {
                     + " | Qty: "   + m.getQuantity());
             }
         }
+        return "TEst";
     }
 
     // ── Orders 
@@ -162,12 +173,13 @@ public class PharmacyShop {
         Order order = new Order(patient, found, quantity, staff.getFullname());
         orders.add(order);
         System.out.println("Order created! " + order);
+        scanner.close();
     }
 
     // View all orders — summary list with index numbers
     public void viewOrders() {
         if (orders.isEmpty()) {
-            System.out.println("No orders found.");
+            System.out.println("No order has been created!");
             return;
         }
         System.out.println("-- Order List --");
@@ -179,6 +191,10 @@ public class PharmacyShop {
     // Print full receipt by order ID
     public void getReceipt(int orderId) {
         for (Order o : orders) {
+            if(o.getOrderId() == null){
+                System.out.println("No order in the list!");
+                break;
+            }
             if (o.getOrderId() == orderId) {
                 System.out.println(o.receipt());
                 return;
@@ -186,11 +202,14 @@ public class PharmacyShop {
         }
         System.out.println("Order #" + orderId + " not found.");
     }
+    public boolean hasOrders() {
+    return !orders.isEmpty();
+}
 
-    public void updateOrderStatus() {}
 
     // ── Seed data 
-    public void setPeople() {
+    private void setPeople() {
+
         Staff staff = new Pharmacist(
                 "Sokha", "P001", "012345678", "sokha123",
                 "Pharmacist", true, "soksok", 500.0, "sokha@gmail.com");
@@ -201,6 +220,9 @@ public class PharmacyShop {
                 "Manager", true, "Admin", 500.0, "dara@gmail.com", 100);
         staffs.add(manager);
     }
+    public boolean hasInventory() {
+    return !inventory.isEmpty();
+}
 
     public void permissionTest() {
         for (Staff p : staffs) {
