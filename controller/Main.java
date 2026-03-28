@@ -1,14 +1,6 @@
 package controller;
 
 import java.util.Scanner;
-<<<<<<< HEAD
-=======
-
-import other.Medicine;
-import other.Patient;
-import user.ManagerStaff;
-import user.Pharmacist;
->>>>>>> 07d2d63ab07dc42279b796ea273186d3d0823efb
 import user.Staff;
 
 public class Main {
@@ -20,54 +12,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         // ── Login gate ────────────────────────────────────────
-<<<<<<< HEAD
         Staff loggedInStaff = pShop.handleLogin(scanner);
-=======
-        System.out.println("=== Welcome to " + pShop.getShopName() + " ===");
-        Staff loggedInStaff = null;
-        String username = "";
-        String password = "";
-
-        while (loggedInStaff == null) {
-
-            do {
-                try {
-                    System.out.print("Username: ");
-                    username = scanner.nextLine().trim();
-
-                    if (username.isEmpty()) {
-                        throw new IllegalArgumentException("Username cannot be empty!");
-                    }
-                    if (username.matches(".*\\d.*")) {
-                        throw new IllegalArgumentException("Username cannot contain numbers!");
-                    }
-                    break;
-
-                } catch (Exception e) {
-                    System.out.println("Error: " + e.getMessage());
-                }
-            } while (true);
-            do {
-                try {
-                    System.out.print("Password: ");
-                    password = scanner.nextLine().trim();
-                    if (password.isEmpty()) {
-                        throw new IllegalArgumentException("Password cannot be empty!");
-                    }
-                    break;
-                } catch (IllegalArgumentException e) {
-                    System.out.println("Error: " + e.getMessage());
-                } finally {
-                    System.out.println("Finished!");
-                }
-
-            } while (true);
-            loggedInStaff = pShop.login(username, password);
-        }
-        System.out.println("Welcome, " + loggedInStaff.getFullname()
-                + " (" + loggedInStaff.getPosition() + ")!\n");
-
->>>>>>> 07d2d63ab07dc42279b796ea273186d3d0823efb
         // ── Main menu loop ────────────────────────────────────
         boolean running = true;
         while (running) {
@@ -77,9 +22,9 @@ public class Main {
             System.out.println("3). Create medicine (menu item)");
             System.out.println("4). Create patient");
             System.out.println("5). View staff list");
-            System.out.println("6). View orders");
-            System.out.println("7). View Patients");
-            System.out.println("8). Get receipt");
+            System.out.println("6). View orders"); // NEW
+            System.out.println("7). View Patients"); // NEW
+            System.out.println("8). Get receipt"); // NEW
             System.out.println("9). Exit");
             System.out.print("=> : ");
 
@@ -116,83 +61,8 @@ public class Main {
                         System.out.println("Access denied: you don't have permission to add medicines.");
                         break;
                     }
-<<<<<<< HEAD
                     
                     pShop.handleCreateMedicine(scanner);
-=======
-                    System.out.println("-- Add Medicine --");
-                    String medName = "";
-                    do {
-                        try {
-                            System.out.print("Medicine name: ");
-                            medName = scanner.nextLine().trim();
-                            if (medName.isEmpty()) {
-                                System.out.println("Medicine name cannot be empty");
-                                continue;
-                            }
-                            if (medName.matches(".*\\d.*")) {
-                                System.out.println("medicine name cannot contain numbers!");
-                                continue;
-                            }
-                            if (!medName.matches("[a-zA-Z ]+")) {
-                                System.out.println("Medicine name can not contain special letters!");
-                                continue;
-                            }
-                            break;
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("Error: " + e.getMessage());
-
-                        }
-                    } while (true);
-
-                    int qty = 0;
-
-                    do {
-                        System.out.print("Quantity: ");
-                        String input = scanner.nextLine().trim();
-                        try {
-                            if (input.isEmpty()) {
-                                System.out.println("Quantity cannot be empty!");
-                                continue;
-                            }
-                            qty = Integer.parseInt(input);
-                            if (qty <= 0 || qty >= 1000) {
-                                System.out.println("Invalid quantity.");
-                                continue;
-                            }
-                            break;
-                        } catch (NumberFormatException e) {
-                            System.out.println("Number only!");
-                        }
-                    } while (true);
-                    double price = 0.00;
-                    do {
-                        try {
-                            System.out.print("Price per piece: ");
-                            String medPrice = scanner.nextLine().trim();
-                            if (medPrice.isEmpty()) {
-                                System.out.println("Medicine price can't be empty!");
-                                continue;
-                            }
-                            if (!medPrice.matches("[0-9.]+")) {
-                                System.out.println("Numbers only, no special characters!");
-                                continue;
-                            }
-                            price = Double.parseDouble(medPrice);
-                            if (price <= 0.25 || price >= 70) {
-                                System.out.println("Invalid price.");
-                                continue;
-                            }
-                            break;
-
-                        } catch (NumberFormatException e) {
-                            System.out.println("Invalid price.");
-                        }
-                    } while (true);
-
-                    pShop.createMenuItem(new Medicine(medName, qty, price));
-                    System.out.println("Medicine \"" + medName + "\" added. Total: " + pShop.getMedicineCount());
->>>>>>> 07d2d63ab07dc42279b796ea273186d3d0823efb
                     break;
 
                 case 4: // Create Patient
@@ -200,96 +70,7 @@ public class Main {
                         System.out.println("Access denied: you don't have permission to create patients.");
                         break;
                     }
-<<<<<<< HEAD
                     pShop.handleCreatePatient(scanner);
-=======
-                    System.out.println("-- Create Patient --");
-                    String name = "";
-                    do {
-                        try {
-                            System.out.print("Name: ");
-                            name = scanner.nextLine().trim();
-                            if (name.isEmpty()) {
-                                System.out.println("Patient name cannot be empty");
-                                continue;
-                            }
-                            if (name.matches(".*\\d.*")) {
-                                System.out.println("Patient name cannot contain numbers!");
-                                continue;
-                            }
-                            if (!name.matches("[a-zA-Z ]+")) {
-                                System.out.println("Patient name can not contain special letters!");
-                                continue;
-                            }
-                            break;
-
-                        } catch (Exception e) {
-                            System.out.println("Error: " + e.getMessage());
-                        }
-                    } while (true);
-                    String symptom = "";
-                    do {
-                        try {
-
-                            System.out.print("Symptom: ");
-                            symptom = scanner.nextLine().trim();
-                            if (symptom.isEmpty()) {
-                                throw new IllegalArgumentException("symptom cannot be empty!");
-                            }
-                            if (symptom.matches(".*\\d.*")) {
-                                throw new IllegalArgumentException("symptom cannot contain numbers!");
-                            }
-                            if (!symptom.matches("[a-zA-Z ]+")) {
-                                System.out.println("Patient name can not contain special letters!");
-                                continue;
-                            }
-                            break;
-
-                        } catch (Exception e) {
-                            System.out.println("Error: " + e.getMessage());
-
-                        }
-                    } while (true);
-
-                    int cAge = 0;
-                    do {
-                        System.out.print("Age: ");
-                        String input = scanner.nextLine().trim();
-                        try {
-                        if (input.isEmpty()) {
-                            System.out.println("Age cannot be empty!");
-                            continue;
-                        }
-                            if (!input.matches("[0-9]+")) {
-                                System.out.println("Numbers only, no characters!");
-                                continue;
-                            }
-                            break;
-                        } catch (Exception e) {
-                            System.out.println("Unable to identified!");
-                        }
-                    } while (true);
-
-                        String insInput = scanner.nextLine().trim();
-                    do {
-                        System.out.print("Has insurance? (yes/no): ");
-                         insInput = scanner.nextLine().trim();
-                        if (insInput.isEmpty()) {
-                            System.out.println("Cannot be empty!");
-                            continue;
-                        }
-
-                        if (!insInput.equalsIgnoreCase("yes") && !insInput.equalsIgnoreCase("no")) {
-                            System.out.println("Please enter yes or no only!");
-                            continue;
-                        }
-                        break;
-                    }while(true);
-                    boolean cIns = Boolean.parseBoolean(insInput);
-
-                    pShop.createPatient(new Patient(name, symptom, cAge, cIns));
-                    System.out.println("Patient \"" + name + "\" created successfully.");
->>>>>>> 07d2d63ab07dc42279b796ea273186d3d0823efb
                     break;
 
                 case 5: // View Staff List
