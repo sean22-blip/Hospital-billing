@@ -547,7 +547,7 @@ public class PharmacyShop {
     // View all orders — summary list with index numbers
     public void viewOrders() {
         if (orders.isEmpty()) {
-            System.out.println("No orders found.");
+            System.out.println("No order has been created!");
             return;
         }
         System.out.println("-- Order List --");
