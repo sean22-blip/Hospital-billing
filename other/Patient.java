@@ -1,23 +1,23 @@
 package other;
 
-import java.util.ArrayList;
-import user.Pharmacist;
-
 public class Patient {
     // NO private, NO getters/setters
 
     // Reference types
     private String name;
     private String symptom;
+    private String id;
     private int age;
+    private char gender;
     private boolean hasInsurance;
 
-    public Patient(String name, String symptom, int age, boolean hasInsurance) {
+    public Patient(String name, String symptom, int age,  String id, char gender, boolean hasInsurance) {
         this.name = name;
         this.symptom = symptom;
         this.age = age;
         this.hasInsurance = hasInsurance;
-        System.out.println("Calling from patient constructor!");
+        this.id = id;        
+        this.gender = gender;
     }
     // Primitive types
 
@@ -33,6 +33,14 @@ public class Patient {
         return age;
     }
 
+    public char getGender() {
+        return gender;
+    }
+
+    public String getID() {
+        return id;
+    }
+
     public boolean HasInsurance() {
         return hasInsurance;
     }
@@ -44,8 +52,10 @@ public class Patient {
     @Override
     public String toString() {
         return "Patient Name: " + getName()
-                + "Symptom: " + getSymptom()
+                + "ID: " + getID()
                 + "Age: " + getAge()
+                + "Gender: " + getGender()
+                + "Symptom: " + getSymptom()
                 + "Has Insurance: " + (hasInsurance ? "Yes" : "No");
     }
 

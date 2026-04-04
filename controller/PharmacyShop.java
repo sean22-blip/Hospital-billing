@@ -12,11 +12,15 @@ import user.Staff;
 
 @FunctionalInterface
 interface StaffFilter {
-    abstract boolean test(Staff s);
+
+    boolean test(Staff s);
 }
 
 public class PharmacyShop {
 
+    // ─────────────────────────────────────────────
+    // ── Constants (Permissions)
+    // ─────────────────────────────────────────────
     public static final String CREATE_STAFF = "CREATE_STAFF";
     public static final String CREATE_PATIENT = "CREATE_PATIENT";
     public static final String CREATE_MENU_ITEM = "CREATE_MENU_ITEM";
@@ -26,17 +30,34 @@ public class PharmacyShop {
     public static final String VIEW_ORDERS = "VIEW_ORDERS";
     public static final String UPDATE_ORDER_STATUS = "UPDATE_ORDER_STATUS";
 
+    // ─────────────────────────────────────────────
+    // ── Fields
+    // ─────────────────────────────────────────────
     private String shopName;
-    private ArrayList<Medicine> inventory;
-    private ArrayList<Patient> patients;
-    private ArrayList<Staff> staffs;
-    private ArrayList<Order> orders;
-    private int medicineCount = 0;
-    private int staffCount = 0;
     private String password;
     private String address;
     private String username;
 
+    private ArrayList<Medicine> inventory;
+    private ArrayList<Patient> patients;
+    private ArrayList<Staff> staffs;
+    private ArrayList<Order> orders;
+
+    private int medicineCount = 0;
+    private int staffCount = 0;
+
+    // ─────────────────────────────────────────────
+    // ── Predefined Staff Filters
+    // ─────────────────────────────────────────────
+    private final StaffFilter activeFilter = s -> s.isActive();
+    // private final StaffFilter pharmacistFilter = s ->
+    // s.getPosition().equals("Pharmacist");
+    // private final StaffFilter managerFilter = s ->
+    // s.getPosition().equals("Manager");
+
+    // ─────────────────────────────────────────────
+    // ── Constructor
+    // ─────────────────────────────────────────────
     public PharmacyShop(String shopName, String password, String address, String username) {
         this.shopName = shopName;
         this.password = password;
@@ -46,10 +67,12 @@ public class PharmacyShop {
         this.patients = new ArrayList<>();
         this.staffs = new ArrayList<>();
         this.orders = new ArrayList<>();
-        setPeople();
+        seeData();
     }
 
-    // ── Getters
+    // ─────────────────────────────────────────────
+    // ── Getters & Setters
+    // ─────────────────────────────────────────────
     public String getShopName() {
         return shopName;
     }
@@ -71,8 +94,27 @@ public class PharmacyShop {
         }
     }
 
-    // ── Login
-    public Staff login(String username, String password) {
+    // ─────────────────────────────────────────────
+    // ── Helper: Filter Staffs
+    // ─────────────────────────────────────────────
+    public void filterAndPrintStaffs(StaffFilter filter) {
+        boolean found = false;
+        for (Staff s : staffs) {
+            if (filter.test(s)) {
+                System.out.println("  - " + s.getFullname() + " (" + s.getPosition() + ")");
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No staff matched the filter.");
+        }
+    }
+
+    // ─────────────────────────────────────────────
+    // ── Authentication
+    // ─────────────────────────────────────────────
+    private Staff login(String username, String password) {
+
         if (this.username.equals(username) && this.password.equals(password)) {
             return new OwnerStaff(
                     "Owner", "OWNER001", "000000000", password,
@@ -85,162 +127,199 @@ public class PharmacyShop {
         }
         return null;
     }
+
     public Staff handleLogin(Scanner scanner) {
-    System.out.println("=== Login ===");
+        System.out.println("=== Login ===");
+        int attempts = 0;
 
-    while (true) {
-        System.out.print("Username: ");
-        String username = scanner.nextLine().trim();
+        while (attempts < 3) {
+            // Username
+            System.out.print("Username: ");
+            String usn = scanner.nextLine().trim();
+            if (usn.isEmpty()) {
+                System.out.println("Username cannot be empty!");
+                continue;
+            }
+            if (!usn.matches("[a-zA-Z0-9_]+")) {
+                System.out.println("Invalid username!");
+                continue;
+            }
+            int letterCount = 0;
+            for (char c : usn.toCharArray()) {
+                if (Character.isLetter(c)) {
+                    letterCount++;
+                }
+            }
+            if (letterCount < 3) {
+                System.out.println("Username must contain at least 3 letters!");
+                continue;
+            }
 
-        if (username.isEmpty()) {
-            System.out.println("Username cannot be empty!");
-            continue;
+            System.out.print("Password: ");
+            String pass;
+            while (true) {
+                pass = scanner.nextLine().trim();
+                if (!pass.isEmpty()) {
+                    break;
+                }
+                System.out.print("Password cannot be empty! Try again: ");
+            }
+            Staff staff = login(usn, pass);
+            if (staff != null) {
+                System.out.println("Welcome, " + staff.getFullname() + " (" + staff.getPosition() + ")");
+                return staff;
+            }
+            attempts++;
+            if (attempts < 3) {
+                System.out.println("Invalid username or password."
+                        + "\nYou have " + (3 - attempts) + " attempts left.\n");
+            }
         }
 
-        System.out.print("Password: ");
-        String password = scanner.nextLine().trim();
-
-        if (password.isEmpty()) {
-            System.out.println("Password cannot be empty!");
-            continue;
-        }
-
-        Staff staff = login(username, password);
-
-        if (staff != null) {
-            System.out.println("Welcome, " + staff.getFullname()
-                    + " (" + staff.getPosition() + ")");
-            return staff;
-        } else {
-            System.out.println("Invalid username or password. Try again.\n");
-        }
+        System.out.println("Too many failed attempts. Exiting...");
+        return null;
     }
-}
 
-    // ── Staff
-    public void createStaff(Staff staff) {
+    // ─────────────────────────────────────────────
+    // ── Staff Management
+    // ─────────────────────────────────────────────
+    private void createStaff(Staff staff) {
         staffs.add(staff);
         staffCount++;
         System.out.println("Staff \"" + staff.getFullname() + "\" added successfully.");
     }
 
     public void handleCreateStaff(Scanner scanner) {
-
         System.out.println("-- Create Staff --");
 
-        System.out.println("Roles: 1. Pharmacist | 2. Manager");
+        // Role
         int role;
-        do { 
+        System.out.println("Roles: 1. Pharmacist | 2. Manager");
+        do {
             System.out.print("Select role (1 or 2): ");
             String input = scanner.nextLine().trim();
             if (input.isEmpty()) {
-                System.out.println("Role selection cannot be empty!");
+                System.out.println("Role cannot be empty!");
+                continue;
             }
             try {
                 role = Integer.parseInt(input);
                 if (role != 1 && role != 2) {
-                    System.out.println("Invalid role selection. Please enter 1 or 2.");
+                    System.out.println("Please enter 1 or 2.");
                     continue;
                 }
                 break;
             } catch (NumberFormatException e) {
-                System.out.println("Invalid input. Please enter a number (1 or 2).");
+                System.out.println("Invalid input. Enter 1 or 2.");
             }
-            
         } while (true);
+        // Full Name
+        String fullName;
+        System.out.print("Full name: ");
+        while (true) {
+            fullName = scanner.nextLine().trim();
 
-        System.out.println("Enter full name: ");
-        String fullName ;
-        do {
-            try {
-                fullName = scanner.nextLine().trim();
-                if (fullName.isEmpty()) {
-                    throw new IllegalArgumentException("Full name cannot be empty! Please enter a valid full name.");
-                }
-                if (fullName.matches(".*\\d.*")) {
-                    throw new IllegalArgumentException("Full name cannot contain numbers!");
-                }
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+            if (fullName.isEmpty()) {
+                System.out.print("Full name cannot be empty. Please try again:");
+                continue;
             }
-            
-        } while (true);
 
-        System.out.println("Enter Staff ID: ");
-        String staffId ;
-        do {
-            try {
-                staffId = scanner.nextLine().trim();
-                if (staffId.isEmpty()) {
-                    throw new IllegalArgumentException("Staff ID cannot be empty! Please enter a valid Staff ID.");
-                }
-                if (staffId.matches(".*\\s.*")) {
-                    throw new IllegalArgumentException("Staff ID cannot contain spaces!");
-                }
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+            if (!fullName.matches("[a-zA-Z ]+")) {
+                System.out.print("Invalid name, Please try again:");
+                continue;
             }
-            
-        } while (true);
+            fullName = Character.toUpperCase(fullName.charAt(0)) + fullName.substring(1).toLowerCase();
+            break;
+        }
+        // Staff ID
+        String staffId;
+        while (true) {
+            System.out.print("Staff ID: ");
+            staffId = scanner.nextLine().trim();
+            if (staffId.isEmpty()) {
+                System.out.println("Staff ID cannot be empty!");
+                continue;
+            }
+            if (staffId.matches(".*\\s.*")) {
+                System.out.println("Staff ID cannot contain spaces!");
+                continue;
+            }
+            if (role == 1) {
+                if (!staffId.matches("p\\d{3}")) {
+                    System.out.println("Please enter a valid staff ID (e.g., p001 for Pharmacist)");
+                    continue;
+                }
+            }
+            if (role == 2) {
+                if (!staffId.matches("m\\d{3}")) {
+                    System.out.println("Please enter a valid staff ID (e.g., m001 for Manager)");
+                    if (ManagerStaff.getManagerCount() > 3) {
+                        System.out.println(
+                                "==== WARNING === \nYou have created " + ManagerStaff.getManagerCount() + " managers.");
+                    }
+                    continue;
+                }
+            }
+            break;
+        }
 
-        System.out.println("Enter phone number: ");
-        String phone ;
-        do {
-            try {
-                phone = scanner.nextLine().trim();
-                if (phone.isEmpty()) {
-                    throw new IllegalArgumentException("Phone number cannot be empty! Please enter a valid phone number.");
-                }
-                if (!phone.matches("\\d{9,15}")) {
-                    throw new IllegalArgumentException("Invalid phone number format. Please enter 9 to 15 digits.");
-                }
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+        // Phone
+        String phone;
+        while (true) {
+            System.out.print("Phone number: ");
+            phone = scanner.nextLine().trim();
+            if (phone.isEmpty()) {
+                System.out.println("Phone cannot be empty!");
+                continue;
             }
-            
-        } while (true);
+            if (phone.length() < 9 || phone.length() > 15) {
+                System.out.println("Phone number must be between 9 and 15 digits.");
+                continue;
+            }
+            if (!phone.matches("\\d{9,15}")) {
+                System.out.println("Enter 9-15 digits only.");
+                continue;
+            }
+            break;
+        }
+        ;
 
-        System.out.println("Enter password: ");
-        String password ;
-        do {
-            try {
-                password = scanner.nextLine().trim();
-                if (password.isEmpty()) {
-                    throw new IllegalArgumentException("Password cannot be empty! Please enter a valid password.");
-                }
-                if (password.length() < 6) {
-                    throw new IllegalArgumentException("Password must be at least 6 characters long.");
-                }
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+        // Password
+        String password;
+        while (true) {
+            System.out.print("Password: ");
+            password = scanner.nextLine().trim();
+            if (password.isEmpty()) {
+                System.out.println("Password cannot be empty!");
+                continue;
             }
-            
-        } while (true);
-        System.out.println("Enter username: ");
-        String username ;
-        do {
-            try {
-                username = scanner.nextLine().trim();
-                if (username.isEmpty()) {
-                    throw new IllegalArgumentException("Username cannot be empty! Please enter a valid username.");
-                }
-                if (username.matches(".*\\s.*")) {
-                    throw new IllegalArgumentException("Username cannot contain spaces!");
-                }
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+            if (password.length() < 6) {
+                System.out.println("Password must be at least 6 characters.");
+                continue;
             }
-            
-        } while (true);
+            break;
+        }
 
-        System.out.println("Enter salary: ");
+        // Username
+        String username;
+        while (true) {
+            System.out.print("Username: ");
+            username = scanner.nextLine().trim();
+            if (username.isEmpty()) {
+                System.out.println("Username cannot be empty!");
+                continue;
+            }
+            if (username.matches(".*\\s.*")) {
+                System.out.println("Username cannot contain spaces!");
+                continue;
+            }
+            break;
+        }
+
+        // Salary
         double salary;
-        do {
+        while (true) {
+            System.out.print("Salary: ");
             String input = scanner.nextLine().trim();
             if (input.isEmpty()) {
                 System.out.println("Salary cannot be empty!");
@@ -250,167 +329,213 @@ public class PharmacyShop {
                 salary = Double.parseDouble(input);
                 if (salary < 0 || salary >= 100000) {
                     System.out.println("Invalid salary amount.");
+                    continue;
                 }
                 break;
             } catch (NumberFormatException e) {
                 System.out.println("Invalid salary input.");
-                
             }
-        } while (true);
-
-        System.out.print("Email: ");
-        String email ;
-        do {
-            try {
-                email = scanner.nextLine().trim();
-                if (email.isEmpty()) {
-                    throw new IllegalArgumentException("Email cannot be empty! Please enter a valid email address.");
-                }
-                if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
-                    throw new IllegalArgumentException("Invalid email format. Please enter a valid email address.");
-                }
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-            }
-            email = scanner.nextLine().trim();
-            
-        } while (true);
-
-        Staff newStaff;
-        if (role == 1) {
-            newStaff = new Pharmacist(fullName, staffId, phone, password,
-                    "Pharmacist", true, username, salary, email);
-        } else if (role == 2) {
-            newStaff = new ManagerStaff(fullName, staffId, phone, password,
-                    "Manager", true, username, salary, email, 0);
-        } else {
-            System.out.println("Invalid role.");
-            return;
         }
+
+        // Email
+        String email;
+        while (true) {
+            System.out.print("Email: ");
+            email = scanner.nextLine().trim();
+            if (email.isEmpty()) {
+                System.out.println("Email cannot be empty!");
+                continue;
+            }
+            if (!email.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+                System.out.println("Invalid email format.");
+                continue;
+            }
+            break;
+        }
+
+        // Create
+        Staff newStaff = (role == 1)
+                ? new Pharmacist(fullName, staffId, phone, password, "Pharmacist", true, username, salary, email)
+                : new ManagerStaff(fullName, staffId, phone, password, "Manager", true, username, salary, email, 0);
 
         createStaff(newStaff);
     }
 
-    // ── Patient / Customer
+    public void viewAllStaffs() {
+        if (staffs.isEmpty()) {
+            System.out.println("No staff found.");
+            return;
+        }
+        filterAndPrintStaffs(s -> true); // print all
+    }
+
+    public void viewActiveStaffs() {
+        System.out.println("-- Active Staff List --");
+        filterAndPrintStaffs(activeFilter);
+    }
+
+    // ─────────────────────────────────────────────
+    // ── Patient Management
+    // ─────────────────────────────────────────────
     public void createPatient(Patient patient) {
         patients.add(patient);
-
     }
 
     public Patient handleCreatePatient(Scanner scanner) {
-        System.out.println("-- Create Patient --");
 
-        System.out.print("Name: ");
-        String name ;
-        do {
-            try {
-                name = scanner.nextLine().trim();
-                if (name.isEmpty()) {
-                    throw new IllegalArgumentException("Name cannot be empty! Please enter a valid name.");
-                }
-                if (name.matches(".*\\d.*")) {
-                    throw new IllegalArgumentException("Name cannot contain numbers!");
-                }
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+        // Name
+        String name;
+        while (true) {
+            System.out.print("Name: ");
+            name = scanner.nextLine().trim();
+            if (name.isEmpty()) {
+                System.out.println("Name cannot be empty!");
+                continue;
             }
-            
-        } while (true);
-
-        System.out.print("Symptom: ");
-        String symptom ;
-        do {
-            try {
-                symptom = scanner.nextLine().trim();
-                if (symptom.isEmpty()) {
-                    throw new IllegalArgumentException("Symptom cannot be empty! Please enter a valid symptom.");
-                }
-                if (symptom.matches(".*\\d.*")) {
-                    throw new IllegalArgumentException("Symptom cannot contain numbers!");
-                }
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+            if (!name.matches("[a-zA-Z ]+")) {
+                System.out.println("Invalid name input!!");
+                continue;
             }
-        
-        } while (true);
+            break;
+        }
 
-        System.out.print("Age: ");
+        // Symptom
+        String symptom;
+        while (true) {
+            System.out.print("Symptom: ");
+            symptom = scanner.nextLine().trim();
+            if (symptom.isEmpty()) {
+                System.out.println("Symptom cannot be empty!");
+                continue;
+            }
+            if (!symptom.matches("[a-zA-Z ]+")) {
+                System.out.print("Symptom must contain letters!");
+                continue;
+            }
+            break;
+        }
+
+        // Age
         int age;
-        do{
+        while (true) {
             System.out.print("Age: ");
             String input = scanner.nextLine().trim();
             if (input.isEmpty()) {
                 System.out.println("Age cannot be empty!");
+                continue;
             }
             try {
                 age = Integer.parseInt(input);
                 if (age <= 0 || age >= 120) {
-                    System.out.println("Invalid AGE.");
-                    break;
+                    System.out.println("Invalid age. Enter between 1-119.");
+                    continue;
                 }
+                break;
             } catch (NumberFormatException e) {
                 System.out.println("Invalid age input.");
-                return null;
             }
         }
-        while (true);
 
-        System.out.print("Has insurance (true/false): ");
-        boolean ins = Boolean.parseBoolean(scanner.nextLine().trim());
+        String id;
+        while (true) {
+            System.out.print("Patient ID: ");
+            id = scanner.nextLine().trim();
 
-        Patient p = new Patient(name, symptom, age, ins);
+            if (id.isEmpty()) {
+                System.out.println("Patient ID cannot be empty!");
+                continue;
+            }
+
+            if (!id.matches("[Cc]\\d{3}")) {
+                System.out.println("Please enter a valid patient ID (e.g., C001 for a patient)");
+                continue;
+            }
+            if (id.matches(".*\\s.*")) {
+                System.out.println("Patient ID cannot contain spaces!");
+                continue;
+            }
+            break;
+        }
+        char gender;
+        while (true) {
+            System.out.print("Gender (M/F): ");
+            String input = scanner.nextLine().trim();
+
+            if (input.isEmpty()) {
+                System.out.println("Gender cannot be empty!");
+                continue;
+            }
+            if (!input.equalsIgnoreCase("M") && !input.equalsIgnoreCase("F")) {
+                System.out.println("Gender must be M or F!");
+                continue;
+            }
+            gender = Character.toUpperCase(input.charAt(0));
+            break;
+        }
+        // Insurance
+        boolean ins = false;
+        while(true){
+        System.out.print("Has insurance (yes/no): ");
+         String input = scanner.nextLine().trim();
+         if (input.isEmpty()) {
+             System.out.println("Insurance status cannot be empty!");
+             continue;
+         }
+         if (!input.equalsIgnoreCase("yes") && !input.equalsIgnoreCase("no")) {
+             System.out.println("Please enter 'yes' or 'no'.");
+             continue;
+         }
+         ins = input.equalsIgnoreCase("yes");
+         break;
+        }
+        Patient p = new Patient(name, symptom, age, id, gender, ins);
         createPatient(p);
-
         return p;
     }
 
-    public void viewCustomers() {
+    public void viewPatients() {
+        System.out.println("-- Patient List --");
         if (patients.isEmpty()) {
             System.out.println("No patients found.");
             return;
         }
-        System.out.println("-- Customer / Patient List --");
         for (Patient p : patients) {
-            System.out.println("Name: " + p.getName()
+            System.out.println("  - " + p.getName()
                     + " | Age: " + p.getAge()
                     + " | Symptom: " + p.getSymptom()
                     + " | Insurance: " + (p.HasInsurance() ? "Yes" : "No"));
         }
     }
 
-    // ── Medicine
-    public void createMenuItem(Medicine medicine) {
+    // ─────────────────────────────────────────────
+    // ── Medicine / Inventory
+    // ─────────────────────────────────────────────
+    private void createMenuItem(Medicine medicine) {
         inventory.add(medicine);
         medicineCount++;
     }
 
     public void handleCreateMedicine(Scanner scanner) {
         System.out.println("-- Add Medicine --");
-
-        System.out.print("Medicine name: ");
-        String medName;
-        do {
-            try {
-                medName = scanner.nextLine().trim();
-                if (medName.isEmpty()) {
-                    throw new IllegalArgumentException(
-                            "Medicine medName cannot be empty. Please enter a valid medName.");
-                }
-                if (medName.matches(".*\\d.*")) {
-                    throw new IllegalArgumentException("medicine medName cannot contain numbers!");
-                }
-                break;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+        String medName = "";
+        while (true) {
+            System.out.print("Medicine name: ");
+            medName = scanner.nextLine().trim();
+            if (medName.isEmpty()) {
+                System.out.println("Medicine name cannot be empty!");
+                continue;
             }
-        } while (true);
-        System.out.print("Quantity: ");
-        int qty;
+            if (!medName.matches("[a-zA-Z ]+")) {
+                System.out.println("Medicine name can only contain letters!");
+                continue;
+            }
+            break;
+        }
 
-        do {
+        // Quantity
+        int qty;
+        while (true) {
+            System.out.print("Quantity: ");
             String input = scanner.nextLine().trim();
             if (input.isEmpty()) {
                 System.out.println("Quantity cannot be empty!");
@@ -419,77 +544,89 @@ public class PharmacyShop {
             try {
                 qty = Integer.parseInt(input);
                 if (qty <= 0 || qty >= 1000) {
-                    System.out.println("Invalid QUANTITY.");
+                    System.out.println("Quantity must be between 1–999.");
+                    continue;
                 }
                 break;
             } catch (NumberFormatException e) {
                 System.out.println("Invalid quantity input.");
-                return;
-            }
-        } while (true);
-
-        System.out.print("Price: ");
-        double price;
-        do {
-            try {
-                price = Double.parseDouble(scanner.nextLine().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid price input.");
-                return;
-            }
-            if (price <= 0 || price >= 10000) {
-                System.out.println("Invalid PRICE.");
-                break;
-            }
-
-        } while (true);
-
-        createMenuItem(new Medicine(medName, qty, price));
-        System.out.println("Medicine added!");
-    }
-
-    public String checkMenu() {
-        if (inventory.isEmpty()) {
-            return "No medicines available in the inventory.";
-        } else {
-            System.out.println("Available Medicines:");
-            for (Medicine m : inventory) {
-                System.out.println("  - " + m.getName()
-                        + " | Price: $" + m.getPrice()
-                        + " | Qty: " + m.getQuantity());
+                continue;
             }
         }
-        return "TEst";
-    }
 
-    // ── Orders
-
-    // Creates an order — shows inventory, asks for medicine + quantity
-    public void createOrder(Patient patient, Staff staff) {
-        checkMenu();
-        if (inventory.isEmpty())
-            return;
-
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.print("Enter medicine name for " + patient.getName() + ": ");
-        String medName ;
-        do {
+        // Price
+        double price;
+        while (true) {
+            System.out.print("Price: ");
+            String input = scanner.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("Price cannot be empty!");
+                continue;
+            }
             try {
-                medName = scanner.nextLine().trim();
-                if (medName.isEmpty()) {
-                    throw new IllegalArgumentException("Medicine name cannot be empty! Please enter a valid medicine name.");
-                }
-                if (medName.matches(".*\\d.*")) {
-                    throw new IllegalArgumentException("Medicine name cannot contain numbers!");
+                price = Double.parseDouble(input);
+                if (price <= 0 || price >= 10000) {
+                    System.out.println("Price must be between 1–9999.");
+                    continue;
                 }
                 break;
-            } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid price input.");
             }
-        
-        } while (true);
+        }
 
+        createMenuItem(new Medicine(medName, qty, price));
+        System.out.println("Medicine added successfully!");
+    }
+
+    public void viewInventory() {
+        System.out.println("=== Current inventory ===");
+        if (inventory.isEmpty()) {
+            System.out.println("No medicines available.");
+            return;
+        }
+        for (Medicine m : inventory) {
+            System.out.println("  - " + m.getName()
+                    + " | Price: $" + m.getPrice()
+                    + " | Qty: " + m.getQuantity());
+        }
+    }
+
+    public boolean hasInventory() {
+        return !inventory.isEmpty();
+    }
+
+    // ─────────────────────────────────────────────
+    // ── Order Management
+    // ─────────────────────────────────────────────
+    private void createOrder(Patient patient, Staff staff, Scanner scanner) {
+        viewInventory();
+        if (inventory.isEmpty()) {
+            return;
+        }
+
+        // Medicine name
+        String medName;
+        while (true) {
+            System.out.print("Enter medicine name for " + patient.getName() + ": ");
+            medName = scanner.nextLine().trim();
+            if (medName.isEmpty()) {
+                System.out.println("Medicine name cannot be empty!");
+                continue;
+            }
+            if (medName.matches(".*\\d.*")) {
+                System.out.println("Medicine name cannot contain numbers!");
+                continue;
+            }
+            String finalMedName = medName;
+            if (!inventory.stream().anyMatch(m -> m.getName().equalsIgnoreCase(finalMedName))) {
+                System.out.println("Medicine not found in inventory! Please choose from the list above.");
+                continue;
+            }
+            break;
+        }
+
+        // Find medicine
         Medicine found = null;
         for (Medicine m : inventory) {
             if (m.getName().equalsIgnoreCase(medName)) {
@@ -498,71 +635,90 @@ public class PharmacyShop {
             }
         }
         if (found == null) {
-            System.out.println("Medicine \"" + medName + "\" not found in inventory.");
+            System.out.println("Medicine \"" + medName + "\" not found.");
             return;
         }
 
-        System.out.print("Enter quantity: ");
+        // Quantity
         int quantity;
-        do {
+        while (true) {
             System.out.print("Quantity: ");
             String input = scanner.nextLine().trim();
             if (input.isEmpty()) {
                 System.out.println("Quantity cannot be empty!");
-
+                continue;
             }
             try {
                 quantity = Integer.parseInt(input);
                 if (quantity <= 0 || quantity >= 1000) {
-                    System.out.println("Invalid QUANTITY.");
-                    break;
+                    System.out.println("Quantity must be between 1–999.");
+                    continue;
                 }
+                break;
             } catch (NumberFormatException e) {
-                System.out.println();
+                System.out.println("Invalid quantity input.");
+                continue;
             }
-        } while (true);
+        }
 
         Order order = new Order(patient, found, quantity, staff.getFullname());
         orders.add(order);
         System.out.println("Order created! " + order);
-        scanner.close();
-    }
-    public void handleCreateOrder(Scanner scanner, Staff staff) {
-    if (inventory.isEmpty()) {
-        System.out.println("No medicines available.");
-        return;
     }
 
-    Patient patient = handleCreatePatient(scanner);
-    createOrder(patient, staff);
-}
-    //view staff list
-    public void handleViewStaffs() {
-    System.out.println("-- Staff List --");
-    if (staffs.isEmpty()) {
-        System.out.println("No staff found.");
-        return;
-    }
-}
-    // View all orders — summary list with index numbers
-    public void viewOrders() {
-        if (orders.isEmpty()) {
-            System.out.println("No order has been created!");
+    public void handleCreateOrder(Scanner scanner, Staff staff) {
+        if (!hasInventory()) {
+            System.out.println("Cannot create order: inventory is empty.");
             return;
         }
+
+        String patientId;
+        Patient patient = null;
+
+        while (true) {
+            System.out.print("Enter patient ID: ");
+            patientId = scanner.nextLine().trim();
+
+            if (patientId.isEmpty()) {
+                System.out.println("Patient ID cannot be empty!");
+                continue;
+            }
+            if (patientId.matches(".*\\s.*")) {
+                System.out.println("Patient ID cannot contain spaces!");
+                continue;
+            }
+
+            for (Patient p : patients) {
+                if (p.getID().equals(patientId)) {
+                    patient = p;
+                    break;
+                }
+            }
+
+            if (patient == null) {
+                System.out.println("Patient ID not found!");
+                continue;
+            }
+
+            break;
+        }
+
+        createOrder(patient, staff, scanner);
+    }
+
+    public void viewOrders() {
         System.out.println("-- Order List --");
+        if (orders.isEmpty()) {
+            System.out.println("No orders created yet.");
+            return;
+        }
         for (int i = 0; i < orders.size(); i++) {
             System.out.println((i + 1) + ". " + orders.get(i));
         }
     }
 
-    // Print full receipt by order ID
-    public void getReceipt(int orderId) {
+    private void getReceipt(int orderId) {
         for (Order o : orders) {
-            if (o.getOrderId() == null) {
-                System.out.println("No order in the list!");
-                break;
-            }
             if (o.getOrderId() == orderId) {
                 System.out.println(o.receipt());
                 return;
@@ -570,67 +726,72 @@ public class PharmacyShop {
         }
         System.out.println("Order #" + orderId + " not found.");
     }
+
     public void handleReceipt(Scanner scanner) {
-    if (!hasOrders()) {
-        System.out.println("No orders available.");
-        return;
-    }
-
-    viewOrders();
-
-    System.out.print("Enter Order ID: ");
-    int id ;
-    do {
-        System.out.print("Order ID: ");
-        String input = scanner.nextLine().trim();
-        if (input.isEmpty()) {
-            System.out.println("Order ID cannot be empty!");
-        }
-        try {
-            id = Integer.parseInt(input);
-            if (id <= 0) {
-                System.out.println("Invalid Order ID.");
-                break;
-            }
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid Order ID input.");
+        if (!hasOrders()) {
+            System.out.println("No orders available.");
             return;
         }
-    } while (true);
+        viewOrders();
 
-    getReceipt(id);
-}
+        int id;
+        while (true) {
+            System.out.print("Enter Order ID: ");
+            String input = scanner.nextLine().trim();
+            if (input.isEmpty()) {
+                System.out.println("Order ID cannot be empty!");
+                continue;
+            }
+            try {
+                id = Integer.parseInt(input);
+                if (id <= 0) {
+                    System.out.println("Invalid Order ID.");
+                    continue;
+                }
+                break;
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid Order ID input.");
+                continue;
+            }
+        }
+
+        getReceipt(id);
+    }
 
     public boolean hasOrders() {
         return !orders.isEmpty();
     }
 
-    // ── Seed data
-    private void setPeople() {
-
-        Staff staff = new Pharmacist(
-                "Sokha", "P001", "012345678", "sokha123",
-                "Pharmacist", true, "soksok", 500.0, "sokha@gmail.com");
-        staffs.add(staff);
-
-        Staff manager = new ManagerStaff(
-                "Dara", "M001", "098765432", "dara123",
-                "Manager", true, "Admin", 500.0, "dara@gmail.com", 100);
-        staffs.add(manager);
-    }
-
-    public boolean hasInventory() {
-        return !inventory.isEmpty();
-    }
-
+    // ─────────────────────────────────────────────
+    // ── Permission Test
+    // ─────────────────────────────────────────────
     public void permissionTest() {
-        for (Staff p : staffs) {
-            System.out.println(p.getUsername() + " can CREATE_ORDER? " + p.can(PharmacyShop.CREATE_ORDER));
-            System.out.println(p.getUsername() + " can CREATE_MENU_ITEM? " + p.can(PharmacyShop.CREATE_MENU_ITEM));
-            System.out.println(p.getUsername() + " can VIEW_ORDERS? " + p.can(PharmacyShop.VIEW_ORDERS));
-            System.out.println(p.getUsername() + " can VIEW_CUSTOMERS? " + p.can(PharmacyShop.VIEW_CUSTOMERS));
+        System.out.println("-- Permission Test --");
+        for (Staff s : staffs) {
+            System.out.println(s.getUsername() + " | CREATE_ORDER: " + s.can(CREATE_ORDER));
+            System.out.println(s.getUsername() + " | CREATE_MENU_ITEM: " + s.can(CREATE_MENU_ITEM));
+            System.out.println(s.getUsername() + " | VIEW_ORDERS: " + s.can(VIEW_ORDERS));
+            System.out.println(s.getUsername() + " | VIEW_CUSTOMERS: " + s.can(VIEW_CUSTOMERS));
         }
-        StaffFilter filter = (Staff s) -> s.isActive();
-        staffs.stream().filter(s -> s.isActive()).forEach(s -> System.out.println(s.getFullname()));
+    }
+
+    // ─────────────────────────────────────────────
+    // ── See Data
+    // ─────────────────────────────────────────────
+    private void seeData() {
+        staffs.add(new Pharmacist(
+                "Sokha", "P001", "012345678", "sokha123",
+                "Pharmacist", true, "soksok", 500.0, "sokha@gmail.com"));
+
+        staffs.add(new ManagerStaff(
+                "Dara", "M001", "098765432", "dara123",
+                "Manager", true, "Admin", 500.0, "dara@gmail.com", 100));
+        staffs.add(new ManagerStaff(
+                "Chan", "M002", "077123456", "chan123",
+                "Manager", true, "Surgery", 800.0, "chan@gmail.com", 50));
+        staffs.add(new ManagerStaff(
+                "Sophea", "N001", "070987654", "sophea123",
+                "Nurse", true, "Pediatrics", 450.0, "sophea@gmail.com", 30));
+        patients.add(new Patient("Mey", "Cancer", 67, "P001", 'M', true));
     }
 }
