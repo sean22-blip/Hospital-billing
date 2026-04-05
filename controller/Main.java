@@ -10,9 +10,12 @@ public class Main {
         PharmacyShop pShop = new PharmacyShop("Kaisen", "676767", "st 60m borey-peng-hout psar-kandal battambang",
                 "IKAKAKA");
         Scanner scanner = new Scanner(System.in);
-
         // ── Login gate ────────────────────────────────────────
         Staff loggedInStaff = pShop.handleLogin(scanner);
+        if(loggedInStaff == null){
+            System.out.println("Too many invalid attempts");
+            return;
+        }
         // ── Main menu loop ────────────────────────────────────
         boolean running = true;
         while (running) {
@@ -20,12 +23,14 @@ public class Main {
             System.out.println("1). Create staff");
             System.out.println("2). Create order");
             System.out.println("3). Create medicine (menu item)");
-            System.out.println("4). Create patient");
-            System.out.println("5). View staff list");
-            System.out.println("6). View orders"); // NEW
-            System.out.println("7). View Patients"); // NEW
-            System.out.println("8). Get receipt"); // NEW
-            System.out.println("9). Exit");
+            System.out.println("4). View all medicines");
+            System.out.println("5). Create patient");
+            System.out.println("6). View staff list");
+            System.out.println("7). View orders"); // NEW
+            System.out.println("8). View Patients"); // NEW
+            System.out.println("9). Get receipt"); // NEW);
+            System.out.println("10). Check all the active staffs");
+            System.out.println("11). Exit");
             System.out.print("=> : ");
 
             int option;
@@ -43,16 +48,16 @@ public class Main {
                         System.out.println("Access denied: you don't have permission to create staff.");
                         break;
                     }
-                   pShop.handleCreateStaff(scanner);
+                    pShop.handleCreateStaff(scanner);
                     break;
 
                 case 2: // Create Order
-                     
+
                     if (!loggedInStaff.can(PharmacyShop.CREATE_ORDER)) {
                         System.out.println("Access denied: you don't have permission to create orders.");
                         break;
                     }
-                    
+
                     pShop.handleCreateOrder(scanner, loggedInStaff);
                     break;
 
@@ -61,11 +66,14 @@ public class Main {
                         System.out.println("Access denied: you don't have permission to add medicines.");
                         break;
                     }
-                    
                     pShop.handleCreateMedicine(scanner);
                     break;
 
-                case 4: // Create Patient
+                case 4:
+                    pShop.viewInventory();
+                    break;
+                case 5: // Create Patient
+                System.out.println("-- Create Patient --");
                     if (!loggedInStaff.can(PharmacyShop.CREATE_PATIENT)) {
                         System.out.println("Access denied: you don't have permission to create patients.");
                         break;
@@ -73,38 +81,46 @@ public class Main {
                     pShop.handleCreatePatient(scanner);
                     break;
 
-                case 5: // View Staff List
+
+                case 6: // View Staff List
                     System.out.println("-- Staff List --");
-                    pShop.handleViewStaffs();
+                    pShop.viewAllStaffs();
                     break;
 
-                case 6: // View Orders
+                case 7: // View Orders
                     if (!loggedInStaff.can(PharmacyShop.VIEW_ORDERS)) {
                         System.out.println("Access denied: you don't have permission to view orders.");
                         break;
-                    }
+                                        }
                     pShop.viewOrders();
                     break;
 
-                case 7: // View Customers
+                case 8: // View Customers
                     if (!loggedInStaff.can(PharmacyShop.VIEW_CUSTOMERS)) {
                         System.out.println("Access denied: you don't have permission to view customers.");
                         break;
                     }
-                    pShop.viewCustomers();
+                    pShop.viewPatients();
                     break;
 
-                case 8: // Get Receipt
+                case 9: // Get Receipt
                     if (!loggedInStaff.can(PharmacyShop.VIEW_ORDERS)) {
                         System.out.println("Access denied: you don't have permission to view receipts.");
                         break;
                     }
-                    
+
                     pShop.handleReceipt(scanner);
 
                     break;
+                case 10: // Check Active Staffs
+                    if (!loggedInStaff.can(PharmacyShop.CREATE_STAFF)) {
+                        System.out.println("Access denied: you don't have permission to view active staffs.");
+                        break;
+                    }
+                    pShop.viewActiveStaffs();
+                    break;
 
-                case 9: // Exit
+                case 11: // Exit
                     System.out.println("Goodbye, " + loggedInStaff.getFullname() + "!");
                     running = false;
                     break;

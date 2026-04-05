@@ -163,7 +163,6 @@ public abstract class Staff implements IStaff {
         }
     }
 
-    @Override
     public boolean equals(Object obj) {
         if (this == obj) {
             return true;
@@ -175,7 +174,6 @@ public abstract class Staff implements IStaff {
         return this.getStaffID().equals(that.getStaffID());
     }
 
-    @Override
     public String toString() {
         return "Staff [staffID=" + staffID + ", fullName=" + getFullname() + ", phNumber=" + phNumber
                 + ", position="

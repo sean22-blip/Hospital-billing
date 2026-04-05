@@ -4,11 +4,17 @@ import controller.PharmacyShop;
 
 public class ManagerStaff extends Staff{
 private double commission;
+private static int managerCount = 0;
     public ManagerStaff(String fullName, String staffID, String phNumber, String password, String position, boolean active, String username, double salary, String email, double commission) {
         super(fullName, staffID,phNumber, password, position, active, username, salary, email);
-        System.out.println("Calling from ManagerStaff constructor!");
-        
+        this.commission = commission;
+        managerCount++;
     }
+
+    public static int getManagerCount() {
+        return managerCount;
+    }
+
 
     @Override
     public boolean equals(Object obj) {
