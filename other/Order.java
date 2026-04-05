@@ -10,7 +10,7 @@ public class Order {
 
     // primitive
     private double snapshotPrice; // primitive double — value copy
-    private String snapshotMedName; // String is immutable — safe snapshot
+    private String medName; // String is immutable — safe snapshot
 
     // Reference 
     private Patient patient;
@@ -19,7 +19,7 @@ public class Order {
 
     public Order(Patient p, Medicine m, int quantity, String pharmacistName) {
         this.patient = p; // reference copy — shares object
-        this.snapshotMedName = m.getName(); // String value snapshot
+        this.medName = m.getName(); // String value snapshot
         this.snapshotPrice = m.getPrice(); // primitive double — value snapshot
         this.quantity = quantity;
         this.pharmacistName = pharmacistName;

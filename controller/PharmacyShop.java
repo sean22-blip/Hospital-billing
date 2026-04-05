@@ -67,8 +67,7 @@ public class PharmacyShop {
         this.patients = new ArrayList<>();
         this.staffs = new ArrayList<>();
         this.orders = new ArrayList<>();
-<<<<<<< HEAD
-        setPeople();
+        // setPeople();
         snapshotProof();
     }
         // ── Snapshot Design Requirement Proof ─────────────────────
@@ -96,7 +95,7 @@ public class PharmacyShop {
         // Two references pointing to the same object — a change through
         // one is immediately visible through the other.
         System.out.println("\n── F2: Reference Copy ──────────────────────────────");
-        Patient patientA = new Patient("Sokha", "Headache", 30, false);
+        Patient patientA = new Patient("Mey", "Cancer", 67, "P001", 'M', false);
         Patient patientB = patientA;               // both point to same object
         patientB.setHasInsurance(true);            // mutate through patientB
         System.out.println("  After patientB.setHasInsurance(true):");
@@ -124,7 +123,7 @@ public class PharmacyShop {
         // stored values remain exactly as they were.
         System.out.println("\n── F4: Snapshot Behaviour ──────────────────────────");
         Medicine aspirin = new Medicine("Aspirin", 50, 12.00);
-        Patient  dara    = new Patient("Dara", "Fever", 25, true);
+        Patient dara = new Patient("Dara", "Flu", 30, "C002", 'F', true);
         Order    order   = new Order(dara, aspirin, 3, "Sokha");
         System.out.println("  [At order creation time]");
         System.out.println("  order.getSnapshotMedName() = " + order.getSnapshotMedName());
@@ -142,9 +141,6 @@ public class PharmacyShop {
         System.out.println("  order.getTotal()           = $" + order.getTotal());           // still 36.0
         System.out.println("  ✓ Snapshot unchanged — primitive value copy proved.");
  
-=======
-        seeData();
->>>>>>> 37865d828a3720232e4601aa24da3b75370cf533
     }
 
     // ─────────────────────────────────────────────
