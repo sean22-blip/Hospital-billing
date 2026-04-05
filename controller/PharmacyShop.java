@@ -47,6 +47,79 @@ public class PharmacyShop {
         this.staffs = new ArrayList<>();
         this.orders = new ArrayList<>();
         setPeople();
+        snapshotProof();
+    }
+        // ── Snapshot Design Requirement Proof ─────────────────────
+    // Demonstrates primitive vs reference behaviour using real
+    // classes from this project (Medicine, Patient, Order).
+    public void snapshotProof() {
+        System.out.println("╔══════════════════════════════════════════════════╗");
+        System.out.println("║   PRIMITIVE vs REFERENCE — PROOF OUTPUT          ║");
+        System.out.println("╚══════════════════════════════════════════════════╝");
+ 
+        // ── F1: Primitive copy ────────────────────────────────
+        // A primitive variable holds its value directly.
+        // Copying it creates a completely independent copy.
+        // Modifying the copy does NOT affect the original.
+        System.out.println("\n── F1: Primitive Copy ──────────────────────────────");
+        double originalPrice = 25.00;
+        double copyPrice     = originalPrice; // value is duplicated, not shared
+        copyPrice = 99.99;                    // modify only the copy
+        System.out.println("  originalPrice = $" + originalPrice); // still 25.00
+        System.out.println("  copyPrice     = $" + copyPrice);     // 99.99
+        System.out.println("  ✓ Original unchanged — primitive copy proved.");
+ 
+        // ── F2: Reference copy ───────────────────────────────
+        // A reference variable holds a memory address, not the object.
+        // Two references pointing to the same object — a change through
+        // one is immediately visible through the other.
+        System.out.println("\n── F2: Reference Copy ──────────────────────────────");
+        Patient patientA = new Patient("Sokha", "Headache", 30, false);
+        Patient patientB = patientA;               // both point to same object
+        patientB.setHasInsurance(true);            // mutate through patientB
+        System.out.println("  After patientB.setHasInsurance(true):");
+        System.out.println("  patientA.HasInsurance() = " + patientA.HasInsurance()); // true
+        System.out.println("  patientB.HasInsurance() = " + patientB.HasInsurance()); // true
+        System.out.println("  ✓ Change visible on both variables — reference copy proved.");
+ 
+        // ── F3: Array stores references ───────────────────────
+        // Arrays of objects store references, not copies of objects.
+        // Mutating the original object is reflected when accessed via the array.
+        System.out.println("\n── F3: Array Stores References ─────────────────────");
+        Medicine paracetamol = new Medicine("Paracetamol", 100, 5.00);
+        Medicine[] shelf = new Medicine[1];
+        shelf[0] = paracetamol;                    // array slot holds a reference
+        System.out.println("  shelf[0].getPrice() before change: $" + shelf[0].getPrice());
+        paracetamol.setPrice(8.50);                // mutate original
+        System.out.println("  shelf[0].getPrice() after  change: $" + shelf[0].getPrice());
+        System.out.println("  ✓ Array reflected the mutation — reference in array proved.");
+ 
+        // ── F4: Snapshot behaviour ────────────────────────────
+        // Order stores medicine price as a primitive double (snapshotPrice)
+        // and medicine name as a String (immutable in Java).
+        // Both are VALUE copies taken at order creation time.
+        // Even after the Medicine object is mutated, the order's
+        // stored values remain exactly as they were.
+        System.out.println("\n── F4: Snapshot Behaviour ──────────────────────────");
+        Medicine aspirin = new Medicine("Aspirin", 50, 12.00);
+        Patient  dara    = new Patient("Dara", "Fever", 25, true);
+        Order    order   = new Order(dara, aspirin, 3, "Sokha");
+        System.out.println("  [At order creation time]");
+        System.out.println("  order.getSnapshotMedName() = " + order.getSnapshotMedName());
+        System.out.println("  order.getSnapshotPrice()   = $" + order.getSnapshotPrice());
+        System.out.println("  order.getTotal()           = $" + order.getTotal());
+ 
+        // Now mutate the original Medicine — price and name both change
+        aspirin.setPrice(99.99);
+        aspirin.setName("RENAMED-Aspirin");
+        System.out.println("\n  [After aspirin.setPrice(99.99) and setName(\"RENAMED-Aspirin\")]");
+        System.out.println("  aspirin.getPrice()         = $" + aspirin.getPrice());        // 99.99
+        System.out.println("  aspirin.getName()          = "  + aspirin.getName());         // RENAMED
+        System.out.println("  order.getSnapshotPrice()   = $" + order.getSnapshotPrice());  // still 12.0
+        System.out.println("  order.getSnapshotMedName() = "  + order.getSnapshotMedName()); // still Aspirin
+        System.out.println("  order.getTotal()           = $" + order.getTotal());           // still 36.0
+        System.out.println("  ✓ Snapshot unchanged — primitive value copy proved.");
+ 
     }
 
     // ── Getters

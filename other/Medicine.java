@@ -38,9 +38,25 @@ public class Medicine {
         return quantity;
     }
 
+    // ── Mutators (used to prove snapshot independence in Main) ─
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // Reduces stock after an order is placed
+    public void reduceStock(int qty) {
+        if (qty > 0 && qty <= this.quantity) {
+            this.quantity -= qty;
+        }
+    }
+
     @Override
     public String toString() {
-        return "Medicine{name='" + name + "', price=" + price + "}";
+        return "Medicine{name='" + name + "', price=" + price + ", qty=" + quantity + "}";
     }
 
 }
