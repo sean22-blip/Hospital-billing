@@ -1,10 +1,7 @@
 package user;
 
-import java.util.Scanner;
-
 public abstract class Staff implements IStaff {
-
-    protected String fullName;
+    private String fullName;
     private String staffID;
     private String phNumber;
     private String email;
@@ -13,12 +10,11 @@ public abstract class Staff implements IStaff {
     private boolean active;
     private String username;
     private double salary;
-    protected int staffCount = 0;
-
-    Scanner scanner = new Scanner(System.in);
 
     @Override
-    public abstract boolean can(String action);
+    public boolean can(String action) {
+        return false;
+    }
 
     public Staff(String fullName, String staffID, String phNumber, String password,
             String position, boolean active, String username, double salary, String email) {
@@ -31,7 +27,7 @@ public abstract class Staff implements IStaff {
         setEmail(email);
         setActive(active);
         this.active = active;
-        staffCount++;
+        System.out.println(("1) Calling from Staff Constructor "));
     }
 
     // Getters
@@ -42,11 +38,9 @@ public abstract class Staff implements IStaff {
     public String getPhNumber() {
         return phNumber;
     }
-
-    protected String getEmail() {
+    public String getEmail() {
         return email;
     }
-
     public String getPassword() {
         return password;
     }
@@ -60,90 +54,51 @@ public abstract class Staff implements IStaff {
     }
 
     public String getFullname() {
-        return String.valueOf(fullName);
+        return fullName;
     }
 
     public String getUsername() {
         return username;
     }
-
-    protected double getSalary() {
-        return salary;
+    public double getSalary() {
+       return salary;
     }
 
     // Setters
-    protected void setStaffID(String staffID) {
-        if (staffID == null || staffID.isEmpty()) {
-            System.out.println("Staff ID cannot be empty");
-            return;
-        }
+    public void setStaffID(String staffID) {
         this.staffID = staffID;
     }
 
-    protected void setPhNumber(String phNumber) {
-        if (phNumber == null || phNumber.length() < 9) {
-            System.out.println("Invalid phone number");
-            return;
-        }
+    public void setPhNumber(String phNumber) {
         this.phNumber = phNumber;
     }
-
-    protected void setEmail(String email) {
-        if (email == null || !email.contains("@")) {
-            System.out.println("Invalid email");
-            return;
-        }
+    public void setEmail(String email) {
         this.email = email;
     }
 
-    protected String setPassword(String password) {
-        if (password == null || password.length() < 6) {
-            System.out.println("Password must be at least 6 characters");
-            return null;
-        }
+    public String setPassword(String password) {
         this.password = password;
         return password;
     }
 
-    protected void setPosition(String position) {
-        if (position == null || position.isEmpty()) {
-            System.out.println("Position cannot be empty");
-            return;
-        }
+    public void setPosition(String position) {
         this.position = position;
     }
 
-    protected void setActive(Boolean active) {
-        if (active == null) {
-            System.out.println("Active status cannot be null");
-            return;
-        }
+    public void setActive(Boolean active) {
         this.active = active;
     }
 
-    protected void setFullname(String fullName) {
-        if (fullName == null || fullName.isEmpty()) {
-            System.out.println("Full name cannot be empty");
-            return;
-        }
+    public void setFullname(String fullName) {
         this.fullName = fullName;
     }
 
     public void setUsername(String username) {
-        if (username == null || username.length() < 4) {
-            System.out.println("Username must be at least 4 characters");
-            return;
-        }
         this.username = username;
     }
 
     public String checkPass(String input) {
-        if (input == null || input.isEmpty()) {
-            System.out.println("Input cannot be empty");
-            return "Invalid input";
-        }
-        System.out.print("Enter old password: ");
-        String oldPass = scanner.nextLine();
+        String oldPass = getPassword();
         if (oldPass.equals(input)) {
             System.out.println("Password is correct");
             return "Password is correct";
@@ -154,26 +109,27 @@ public abstract class Staff implements IStaff {
     }
 
     public boolean isActive() {
-        if (active) {
-            System.out.println(getFullname() + " is active");
+        getActive();
+        if (active == true) {
+            System.out.println("Staff is active");
             return true;
         } else {
-            System.out.println(getFullname() + " is inactive");
+            System.out.println("Staff is inactive");
             return false;
         }
     }
-
+     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
+        if (this == obj)
             return true;
-        }
-        if (obj == null || getClass() != obj.getClass()) {
+        if (obj == null || getClass() != obj.getClass())
             return false;
-        }
         Staff that = (Staff) obj;
         return this.getStaffID().equals(that.getStaffID());
     }
 
+
+    @Override
     public String toString() {
         return "Staff [staffID=" + staffID + ", fullName=" + getFullname() + ", phNumber=" + phNumber
                 + ", position="
